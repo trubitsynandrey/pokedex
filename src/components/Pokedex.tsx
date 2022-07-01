@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
+import { CardModal } from './CardModal'
 import { PokeCard } from './PokeCard'
 
 const PokedexContainer = styled.div`
@@ -72,15 +73,19 @@ export const PokedexScreen = () => {
         <PokedexContainer>
             <CardsContainer>
                 {data?.map((item, idx) => {
+                    const imgSrc = item.sprites.other.dream_world.front_default
                     return (
-                        <PokeCard 
-                            key={idx} 
-                            name={item.name} 
-                            attack={item.stats[1].base_stat} 
-                            defense={item.stats[2].base_stat} 
-                            types={item.types} color={item.colour} 
-                            img={item.sprites.other.dream_world.front_default} 
-                        />
+                            <PokeCard
+                                key={idx}
+                                name={item.name}
+                                attack={item.stats[1].base_stat}
+                                defense={item.stats[2].base_stat}
+                                types={item.types} color={item.colour}
+                                img={imgSrc}
+                                stats={item.stats}
+                                experience={item.base_experience}
+                                abilities={item.abilities}
+                            />
                     )
                 })}
             </CardsContainer>

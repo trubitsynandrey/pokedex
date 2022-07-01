@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { breakpoints } from '../styles/breakpoints'
+import { CardModal } from './CardModal'
 
-const pokeColors = {
+export const pokeColors = {
     green: ['#64D368', '#64D368'],
     yellow: ['#F2CB07', '#F2B807'],
     red: ['#B33327', '#D93E30',],
@@ -34,7 +36,9 @@ const CardLeftSide = styled.div`
     
 `
 
-const CardRightImg = styled.div<{ colour: keyof typeof pokeColors }>`
+export type colorsType = keyof typeof pokeColors
+
+export const CardRightImg = styled.div<{ colour: colorsType }>`
     background: 
     ${({ colour }) => `linear-gradient(270deg, ${pokeColors[colour][1]} 0.15%, ${pokeColors[colour][0]} 100%)`};
     height: inherit;
@@ -56,7 +60,7 @@ const PokeName = styled.p`
     margin-bottom: 18px;
 `
 
-const Properties = styled.div`
+export const PropertiesCircle = styled.div`
     border: 3px solid #212121;
     border-radius: 999px;
     display: flex;
@@ -65,17 +69,21 @@ const Properties = styled.div`
     width: 36px;
     height: 36px;
 `
-const PropertyName = styled.span`
+export const PropertyName = styled.span`
     font-size: 12px;
     line-height: 14px;
     color: #4B4B4B;
+    text-transform: capitalize;
+    @media (max-width: ${breakpoints.lg}) {
+        font-size: 10px;
+    }
 `
 const PropertiesBox = styled.div`
     display: flex;
     flex-direction: column;
     gap: 6px;
 `
-const Label = styled.div`
+export const Label = styled.div`
     width: 60px;
     height: 16px;
     border-radius: 999px;
@@ -86,9 +94,9 @@ const Label = styled.div`
     text-align: center;
     background-color: #73D677;
     text-transform: capitalize;
-`
+`   
 
-const labelColours = {
+export const labelColours = {
     fire: pokeColors.red[1],
     flying: pokeColors.white[1],
     poison: pokeColors.purple[1],
@@ -97,48 +105,74 @@ const labelColours = {
     ground: pokeColors.brown[1],
     electric: pokeColors.yellow[0],
     fairy: pokeColors.pink[1],
-    
+
 }
 
-interface PokeCardProps  {
+interface PokeCardProps {
     name: string,
-    attack: string, 
+    attack: string,
     defense: string,
-    types:string[],
+    types: string[],
     color: keyof typeof pokeColors,
     img: string,
+    stats: any,
+    experience: number,
+    abilities: any,
 }
 
-export const PokeCard = ({name, attack, defense, types, color, img}: PokeCardProps) => {
-    return (
-        <Card>
-            <CardLeftSide />
-            <PokeDescription>
-                <PokeName>
-                    {name}
-                </PokeName>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                    <PropertiesBox>
-                        <Properties>{attack}</Properties>
-                        <PropertyName>Attack</PropertyName>
-                    </PropertiesBox>
+export const PokeCard = ({ name, attack, defense, types, color, img, stats, experience, abilities }: PokeCardProps) => {
+    const [isCardModal, setIsCardModal] = useState(false);
 
-                    <PropertiesBox>
-                        <Properties>{defense}</Properties>
-                        <PropertyName>Defense</PropertyName>
-                    </PropertiesBox>
-                </div>
-                <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
-                    {types.map((item: any) => {
-                        const labelName: keyof typeof labelColours = item.type.name;
-                        return <Label style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
-                    })}
-                </div>
-            </PokeDescription>
-            <CardRightImg colour={color}>
-                <PokeImg src={img} />
-            </CardRightImg>
-        </Card>
+    useEffect(() => {
+        if (isCardModal) {
+          document.body.style.overflow = 'hidden'
+        } else {
+          document.body.style.overflow = 'unset'
+        }
+      }, [isCardModal])
+    return (
+        <>
+            {isCardModal && 
+            <CardModal 
+                setIsModal={setIsCardModal} 
+                img={img} 
+                color={color} 
+                name={name}
+                stats={stats}
+                experience={experience}
+                abilities={abilities}
+                types={types}
+            />}
+            <Card onClick={() => setIsCardModal(true)}>
+
+                <CardLeftSide />
+                <PokeDescription>
+                    <PokeName>
+                        {name}
+                    </PokeName>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <PropertiesBox>
+                            <PropertiesCircle>{attack}</PropertiesCircle>
+                            <PropertyName>Attack</PropertyName>
+                        </PropertiesBox>
+
+                        <PropertiesBox>
+                            <PropertiesCircle>{defense}</PropertiesCircle>
+                            <PropertyName>Defense</PropertyName>
+                        </PropertiesBox>
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+                        {types.map((item: any) => {
+                            const labelName: keyof typeof labelColours = item.type.name;
+                            return <Label style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
+                        })}
+                    </div>
+                </PokeDescription>
+                <CardRightImg colour={color}>
+                    <PokeImg src={img} />
+                </CardRightImg>
+            </Card>
+        </>
     )
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, ReactElement, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
 import { CardModal } from './CardModal'
@@ -11,7 +11,9 @@ export const pokeColors = {
     purple: ['#6A359C', '#804FB3'],
     blue: ['#5BC7FA', '#35BAFF'],
     brown: ['#772F1A', '#F2A65A'],
-    white: ['#B8C6DB', '#F5F7FA']
+    white: ['#B8C6DB', '#F5F7FA'],
+    gray: ['#B8C6DB', '#F5F7FA'],
+    black: ['#28313B', '#485461']
 }
 
 
@@ -39,10 +41,11 @@ const CardLeftSide = styled.div`
 export type colorsType = keyof typeof pokeColors
 
 export const CardRightImg = styled.div<{ colour: colorsType }>`
-    background: 
-    ${({ colour }) => `linear-gradient(270deg, ${pokeColors[colour][1]} 0.15%, ${pokeColors[colour][0]} 100%)`};
-    height: inherit;
+background: 
+${({ colour }) => `linear-gradient(270deg, ${pokeColors[colour][1]} 0.15%, ${pokeColors[colour][0]} 100%)`};
+height: inherit;
 `
+
 
 //poke description
 const PokeDescription = styled.div`
@@ -105,7 +108,6 @@ export const labelColours = {
     ground: pokeColors.brown[1],
     electric: pokeColors.yellow[0],
     fairy: pokeColors.pink[1],
-
 }
 
 interface PokeCardProps {
@@ -120,7 +122,7 @@ interface PokeCardProps {
     abilities: any,
 }
 
-export const PokeCard = ({ name, attack, defense, types, color, img, stats, experience, abilities }: PokeCardProps) => {
+export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, stats, experience, abilities }: PokeCardProps, ref: any): ReactElement => {
     const [isCardModal, setIsCardModal] = useState(false);
 
     useEffect(() => {
@@ -130,6 +132,7 @@ export const PokeCard = ({ name, attack, defense, types, color, img, stats, expe
           document.body.style.overflow = 'unset'
         }
       }, [isCardModal])
+    console.log(color)
     return (
         <>
             {isCardModal && 
@@ -143,7 +146,7 @@ export const PokeCard = ({ name, attack, defense, types, color, img, stats, expe
                 abilities={abilities}
                 types={types}
             />}
-            <Card onClick={() => setIsCardModal(true)}>
+            <Card onClick={() => setIsCardModal(true)} ref={ref}>
 
                 <CardLeftSide />
                 <PokeDescription>
@@ -174,5 +177,5 @@ export const PokeCard = ({ name, attack, defense, types, color, img, stats, expe
             </Card>
         </>
     )
-}
+})
 

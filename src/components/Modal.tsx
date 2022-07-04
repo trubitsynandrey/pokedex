@@ -28,6 +28,7 @@ const ModalInner = styled.div`
     align-items: center;
     gap: 16px;
     padding: 38px 0px;
+    transition: 0.2s ease-in-out;
 `
 const LogoContainer = styled.div`
 width: 138px;

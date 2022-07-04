@@ -10,6 +10,7 @@ const FooterContainer = styled.footer`
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 33px;
+    margin-top: 20px;
     font-size: 18px;
     line-height: 21px;
     color: #212121;

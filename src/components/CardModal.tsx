@@ -30,6 +30,9 @@ const ModalInner = styled.div`
     z-index: 100;
     height: 340px;
     grid-template-columns: 1fr 1.3fr;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     @media (max-width: ${breakpoints.lg}) {
         min-width: 90%;
     }
@@ -44,6 +47,7 @@ const ModalInner = styled.div`
         height: 100%;
         z-index: 10;
         overflow-y: scroll;
+
     }
 `
 

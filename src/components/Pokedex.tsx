@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
 import { CardModal } from './CardModal'
+import { Loader } from './Loader'
+import { PaginationLoader } from './PaginationLoader'
 import { PokeCard } from './PokeCard'
 
 const PokedexContainer = styled.div`
@@ -28,6 +30,13 @@ const CardsContainer = styled.div`
     }
 `
 
+const LoaderWrapper = styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
 
 
 
@@ -35,9 +44,15 @@ const CardsContainer = styled.div`
 
 export const PokedexScreen = () => {
     const [data, setData] = useState<any[]>([])
-    const getData = async () => {
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoadingMore, setIsLoadingMore] = useState(false)
+
+    const [offset, setOffset] = useState(0)
+
+    const getData = async (offset: number = 0, limit: number = 24) => {
+        setIsLoadingMore(true)
         let data = [];
-        const pokemons = await fetch('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=60')
+        const pokemons = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`)
             .then(res => res.json())
         const requests = await pokemons.results
             .map((item: { name: string, url: string }) => fetch(item.url).then(res => res.json()))
@@ -49,34 +64,51 @@ export const PokedexScreen = () => {
             console.log('color iterate', color[idx])
             return Object.assign(item, { colour: color[idx] }, {})
         })
-        // return await Promise.all(requests)
+        setIsLoadingMore(false)
         return newdata;
     }
 
-    const getColor = async () => {
-        const species = await getData()
-            .then(res => res.map(item => fetch(item.species.url).then(res => res.json())))
-        const data = await Promise.all(species)
-        const newdata = data.map(item => item.color.name)
-        return newdata;
-    }
+    const watcher = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
-        getColor().then(res => console.log('color', res[1]))
-        getData().then(res => {
+        getData(offset).then(res => {
             console.log(res)
-            setData(res)
+            if (offset === 0) {
+                setData(res)
+                setIsLoading(false)
+            } else {
+            setData(prev => [...prev, ...res])}
         })
-    }, [])
+        console.log('offset',offset)
+        console.log('data',data)
+    }, [offset])
+
+    const lastUserRef = useCallback((node: Element) => {
+        if (isLoadingMore) return;
+        if (watcher.current) watcher.current.disconnect()
+        watcher.current = new IntersectionObserver( entries => {
+          if (entries[0].isIntersecting) {
+            setOffset(prev => prev + 24)
+          }
+        })
+        if (node) watcher.current.observe(node)
+      }, [isLoadingMore]);
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <PokedexContainer>
             <CardsContainer>
                 {data?.map((item, idx) => {
                     const imgSrc = item.sprites.other.dream_world.front_default
+                    if (data.length === idx + 1) {
                     return (
                             <PokeCard
-                                key={idx}
+                                ref={lastUserRef}
+
+                                key={item.id}
                                 name={item.name}
                                 attack={item.stats[1].base_stat}
                                 defense={item.stats[2].base_stat}
@@ -86,9 +118,25 @@ export const PokedexScreen = () => {
                                 experience={item.base_experience}
                                 abilities={item.abilities}
                             />
-                    )
+                    )}
+                    else {
+                        return (<PokeCard
+                            key={idx}
+                            name={item.name}
+                            attack={item.stats[1].base_stat}
+                            defense={item.stats[2].base_stat}
+                            types={item.types} color={item.colour}
+                            img={imgSrc}
+                            stats={item.stats}
+                            experience={item.base_experience}
+                            abilities={item.abilities}
+                        />)
+                    }
+
                 })}
             </CardsContainer>
+            {isLoadingMore && <LoaderWrapper>
+                <PaginationLoader /></LoaderWrapper>}
         </PokedexContainer>
     )
 }

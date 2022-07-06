@@ -7,6 +7,7 @@ import { BurgerMenu } from '../icons/Burger'
 import { BurgerModal } from './Modal'
 import { usePokeContext } from './PokeContext'
 import { Link, NavLink } from 'react-router-dom'
+import { useIsMobile } from './isMobileHook'
 
 const HeaderContainer = styled.header`
     width: 100%;
@@ -73,20 +74,10 @@ height: 63px;
 `
 
 export const Header = () => {
-    const [width, setWidth] = useState<number>(window.innerWidth);
     const {isNavModal, setIsNavModal} = usePokeContext()
 
-    function handleWindowSizeChange() {
-        setWidth(window.innerWidth);
-    }
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
-
-    const isMobile = width <= 576;
+    const isMobile = useIsMobile()
+    console.log('ismobile', isMobile)
     return (
         <HeaderContainer>
             <LogoContainer to="/">

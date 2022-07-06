@@ -132,7 +132,6 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
           document.body.style.overflow = 'unset'
         }
       }, [isCardModal])
-    console.log(color)
     return (
         <>
             {isCardModal && 

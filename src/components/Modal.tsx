@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Logo } from '../icons/Logo'
 import { ToggleSwitch } from './ToggleSwitch'
+import { ModalContainer } from './UI/ModalContainer'
 
 const ModalBack = styled.div`
     position: absolute;
@@ -14,7 +15,7 @@ const ModalBack = styled.div`
     top: 0;
 `
 const ModalInner = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     display: flex;
@@ -58,7 +59,7 @@ interface BurgerModalProps {
 
 export const BurgerModal = ({ setIsModal }: BurgerModalProps) => {
     return (
-        <>
+        <ModalContainer setIsModal={setIsModal}>
             <ModalInner>
                 <LogoContainer>
                     <Logo />
@@ -69,9 +70,7 @@ export const BurgerModal = ({ setIsModal }: BurgerModalProps) => {
                 <NavItem to="/compare">Compare</NavItem>
                 <ToggleSwitch />
             </ModalInner>
-
-            <ModalBack onClick={() => setIsModal(false)}/>
-        </>
-            )
+        </ModalContainer>
+    )
 }
 

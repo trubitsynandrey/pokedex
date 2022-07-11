@@ -16,7 +16,6 @@ const TypeSelectorContainer = styled.label`
     display: inline-block;
     background-color: #F2F2F2;
     border-radius: 4px;
-    margin-bottom: 80px;
     width: 135px;
     height: 20px;    
     text-align: center;

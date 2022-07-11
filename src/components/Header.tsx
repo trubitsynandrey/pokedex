@@ -8,6 +8,7 @@ import { BurgerModal } from './Modal'
 import { usePokeContext } from './PokeContext'
 import { Link, NavLink } from 'react-router-dom'
 import { useIsMobile } from './isMobileHook'
+import { ReactPortal } from './UI/CreatePortalFunc'
 
 const HeaderContainer = styled.header`
     width: 100%;
@@ -20,7 +21,7 @@ const HeaderContainer = styled.header`
     background-color: #F5DB13;
     box-shadow: 0px 4px 16px rgba(1, 28, 64, 0.2);
     justify-content: space-between;
-    z-index: 10;
+    z-index: 2;
     @media (max-width: ${breakpoints.lg}) {
         padding-left: 5%;
         padding-right: 5%;
@@ -74,23 +75,22 @@ height: 63px;
 `
 
 export const Header = () => {
-    const {isNavModal, setIsNavModal} = usePokeContext()
+    const { isNavModal, setIsNavModal } = usePokeContext()
 
     const isMobile = useIsMobile()
-    console.log('ismobile', isMobile)
     return (
         <HeaderContainer>
             <LogoContainer to="/">
                 <Logo />
             </LogoContainer>
-           {!isMobile?  <Navigation>
+            {!isMobile ? <Navigation>
                 <NavItem to={'/'}>Home</NavItem>
                 <NavItem to={'/pokedex'}>Pokédex</NavItem>
                 <NavItem to={'/ledendaries'}>Legendaries</NavItem>
                 <NavItem to={'/compare'}>Compare</NavItem>
                 <ToggleSwitch />
-            </Navigation> : <BurgerMenu onClick={() => setIsNavModal(true)}/>}
-            {isNavModal && isMobile && <BurgerModal setIsModal={setIsNavModal}/>}
+            </Navigation> : <BurgerMenu onClick={() => setIsNavModal(true)} />}
+            {isNavModal && isMobile && <ReactPortal><BurgerModal setIsModal={setIsNavModal} /></ReactPortal>}
         </HeaderContainer>
     )
 }

@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import { CloseIcon } from '../icons/CloseIcon'
 import { breakpoints } from '../styles/breakpoints'
 import { useIsMobile } from './isMobileHook'
-import { CardRightImg, colorsType, Label, labelColours, pokeColors, PropertyName } from './PokeCard'
+import { colorsType, Label, labelColours, pokeColors, PropertyName } from './PokeCard'
+import { ModalContainer } from './UI/ModalContainer'
 
 const ModalBack = styled.div`
     position: fixed;
@@ -21,7 +22,7 @@ const ModalBack = styled.div`
     }
     
 `
-const ModalInner = styled.div<{colour: colorsType}>`
+const ModalInner = styled.div<{ colour: colorsType }>`
     background: 
     ${({ colour }) => `linear-gradient(270deg, ${pokeColors[colour][1]} 0.15%, ${pokeColors[colour][0]} 100%)`};
     min-width: 60%;
@@ -248,7 +249,7 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
     const valueToPercentage = (val: number) => `${Math.floor(val / 10)}%`
 
     return (
-        <>
+        <ModalContainer setIsModal={setIsModal}>
             <ModalInner colour={color}>
                 <CloseIconWrapper onClick={() => setIsModal(false)}>
                     <CloseIcon />
@@ -256,15 +257,15 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                 {/* <ModalImgWrapper colour={color}> */}
                 {isMobile && <PokeName>{name}</PokeName>}
                 <PokeImg src={img} alt={name} />
-                
+
                 {/*      */}
                 <DescriptionBox color={color}>
-                <LabelModalWrapper>
-                    {types.map((item: any) => {
-                        const labelName: keyof typeof labelColours = item.type.name;
-                        return <Label style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
-                    })}
-                </LabelModalWrapper>
+                    <LabelModalWrapper>
+                        {types.map((item: any, idx: number) => {
+                            const labelName: keyof typeof labelColours = item.type.name;
+                            return <Label key={idx} style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
+                        })}
+                    </LabelModalWrapper>
                     {!isMobile && <PokeName>
                         {name}
                     </PokeName>}
@@ -305,8 +306,7 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                     </PropertiesContainer>
                 </DescriptionBox>
             </ModalInner>
-            <ModalBack onClick={() => setIsModal(false)} />
-        </>
+        </ModalContainer>
     )
 }
 

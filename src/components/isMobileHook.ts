@@ -1,5 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { breakpoints } from "../styles/breakpoints";
+import React, { useEffect, useState } from "react";
 
 export const useIsMobile = (): boolean => {
   const [width, setWidth] = useState<number>(window.innerWidth);

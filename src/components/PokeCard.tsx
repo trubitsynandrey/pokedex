@@ -2,6 +2,7 @@ import React, { forwardRef, ReactElement, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
 import { CardModal } from './CardModal'
+import { ReactPortal } from './UI/CreatePortalFunc'
 
 export const pokeColors = {
     green: ['#64D368', '#64D368'],
@@ -97,7 +98,7 @@ export const Label = styled.div`
     text-align: center;
     background-color: #73D677;
     text-transform: capitalize;
-`   
+`
 
 export const labelColours = {
     fire: pokeColors.red[1],
@@ -127,24 +128,26 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
 
     useEffect(() => {
         if (isCardModal) {
-          document.body.style.overflow = 'hidden'
+            document.body.style.overflow = 'hidden'
         } else {
-          document.body.style.overflow = 'unset'
+            document.body.style.overflow = 'unset'
         }
-      }, [isCardModal])
+    }, [isCardModal])
     return (
         <>
-            {isCardModal && 
-            <CardModal 
-                setIsModal={setIsCardModal} 
-                img={img} 
-                color={color} 
-                name={name}
-                stats={stats}
-                experience={experience}
-                abilities={abilities}
-                types={types}
-            />}
+            {isCardModal &&
+                <ReactPortal>
+                    <CardModal
+                        setIsModal={setIsCardModal}
+                        img={img}
+                        color={color}
+                        name={name}
+                        stats={stats}
+                        experience={experience}
+                        abilities={abilities}
+                        types={types}
+                    />
+                </ReactPortal>}
             <Card onClick={() => setIsCardModal(true)} ref={ref}>
 
                 <CardLeftSide />

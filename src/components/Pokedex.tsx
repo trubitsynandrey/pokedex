@@ -67,6 +67,7 @@ export const PokedexScreen = () => {
         const newdata = data.map((item, idx) => {
             return Object.assign(item, { colour: color[idx] }, {})
         })
+        // setOffset(prev => prev + 20)
         setIsLoadingMore(false)
         return newdata;
     }

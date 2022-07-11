@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { types, typesUnion } from '../../types'
 import { usePokeContext } from '../PokeContext'
 import { ContainerSelect } from './ContainerSelect'
+import { TypeCheckbox } from './TypeCheckbox'
 
 const TypeSelectorWindow = styled.div`
     display: none;
@@ -24,45 +25,6 @@ const TypeSelectorWindow = styled.div`
     text-align: left;
 `
 
-const TypeCheckboxWrapper = styled.div`
-    position: relative;
-    z-index: 5;
-    cursor: pointer;
-    display: flex;
-    & > input[type="checkbox"] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    };
-    & > input[type="checkbox"]:checked + span {
-        background-color: #D93E30;
-    }
-    & > span {
-        position: absolute;
-        top: 3px;
-        left: 0;    
-        height: 12px;   
-        width: 12px;
-        background-color: transparent;
-        border: 1px solid #212121;
-    }
-    & > label {
-        margin-left: 18px;
-        flex: 1;
-        cursor: pointer;
-        text-transform: capitalize;
-        -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none;
-    }
-
-`
-
 export const TypeSelector = () => {
     const { filterTypes, setFilterTypes } = usePokeContext()
     const onChangeFilter = (item: typesUnion) => {
@@ -72,14 +34,15 @@ export const TypeSelector = () => {
     }
     console.log(filterTypes, 'filter')
     return (
-       <ContainerSelect name={'type'}>
+        <ContainerSelect name={'type'}>
             <TypeSelectorWindow>
                 {types.map((item, idx) =>
-                (<TypeCheckboxWrapper key={idx}>
-                    <input type="checkbox" id={item} name={item} checked={filterTypes[item]} onChange={() => onChangeFilter(item)} />
-                    <span />
-                    <label htmlFor={item} >{item}</label>
-                </TypeCheckboxWrapper>)
+                    <TypeCheckbox 
+                        key={idx} 
+                        item={item} 
+                        typesArr={filterTypes} 
+                        onChange={() => onChangeFilter(item)} 
+                    />
                 )}
             </TypeSelectorWindow>
         </ContainerSelect >

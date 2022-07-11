@@ -1,13 +1,12 @@
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
-import { CardModal } from './CardModal'
-import { InputSearch } from './InputSearch'
 import { Loader } from './Loader'
 import { PaginationLoader } from './PaginationLoader'
 import { PokeCard } from './PokeCard'
-import { usePokeContext } from './PokeContext'
-import { TypeSelector, typesUnion } from './TypeSelector'
+import { initialValue, usePokeContext } from './PokeContext'
+import { typesUnion } from '../types'
+import { PokedexFilter } from './filterUI/PokedexFilter'
 
 const PokedexContainer = styled.div`
     padding-top: 160px;
@@ -49,9 +48,8 @@ export const PokedexScreen = () => {
     const [data, setData] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [isLoadingMore, setIsLoadingMore] = useState(false)
-    const { filterTypes } = usePokeContext()
+    const { filterTypes, filterRanges, filterName } = usePokeContext()
     const [offset, setOffset] = useState(0)
-    const [pokemonName, setPokemonName] = useState('')
     const isFilter = Object.values(filterTypes).some(bool => bool)
     console.log(isFilter, 'isfilter')
 
@@ -98,16 +96,21 @@ export const PokedexScreen = () => {
         if (node) watcher.current.observe(node)
     }, [isLoadingMore]);
 
+    function jsonEqual(a: any,b: any) {
+        return JSON.stringify(a) === JSON.stringify(b);
+    }
+
+    const isRangesFilter = jsonEqual(filterRanges, initialValue.filterRanges)
+
     if (isLoading) {
         return <Loader />
     }
 
     return (
         <PokedexContainer>
-            <InputSearch onChange={(e) => setPokemonName(e.target.value)} />
-            <TypeSelector />
+            <PokedexFilter />
             <CardsContainer>
-                {data?.filter(item => item.name.includes(pokemonName))
+                {data?.filter(item => item.name.includes(filterName))
                     .filter(item => {
                         if (isFilter) {
                             const types = item.types
@@ -118,6 +121,17 @@ export const PokedexScreen = () => {
                             })
                         } else {
                             return true
+                        }
+                    })
+                    .filter(item => {
+                        if (!isRangesFilter) {
+                            const exp = item.base_experience
+                            const attack = item.stats[1].base_stat
+                            console.log(exp, attack)
+                            console.log(filterRanges.attack.min < +attack && filterRanges.attack.max > +attack, 'attack')
+                            return filterRanges.attack.min < +attack && filterRanges.attack.max > +attack && filterRanges.experience.min < +exp && filterRanges.experience.max > +exp
+                        } else {
+                            return true;
                         }
                     })
                     .map((item, idx) => {
@@ -140,7 +154,7 @@ export const PokedexScreen = () => {
                         }
                         else {
                             return (<PokeCard
-                                key={idx}
+                                key={item.id}
                                 name={item.name}
                                 attack={item.stats[1].base_stat}
                                 defense={item.stats[2].base_stat}

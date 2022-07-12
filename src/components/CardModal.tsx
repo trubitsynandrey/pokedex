@@ -5,6 +5,7 @@ import { CloseIcon } from '../icons/CloseIcon'
 import { breakpoints } from '../styles/breakpoints'
 import { useIsMobile } from './isMobileHook'
 import { colorsType, Label, labelColours, pokeColors, PropertyName } from './PokeCard'
+import { usePokeContext } from './PokeContext'
 import { ModalContainer } from './UI/ModalContainer'
 
 const ModalBack = styled.div`
@@ -172,10 +173,13 @@ const ModalPropertiesCircle = styled.div`
     justify-content: center;
     align-items: center;
 `
-const CloseIconWrapper = styled.div`
+const CloseIconWrapper = styled.div<{isDarkTheme: boolean}>`
     position: absolute;
     right: 0;
     top: -35px;
+    & > svg > rect {
+        fill: ${({isDarkTheme}) => isDarkTheme? 'white' : '#212121'};
+    }
     &:hover > svg > rect {
         fill: #F2B807;
         transition: ease-in-out 0.2s;
@@ -236,6 +240,7 @@ interface BurgerModalProps {
 
 
 export const CardModal = ({ setIsModal, img, color, name, stats, experience, abilities, types }: BurgerModalProps) => {
+    const {darkTheme} = usePokeContext()
     const statsForRender = stats.filter((item: any) => {
         return item.stat.name !== "hp" && item.stat.name !== "speed"
     })
@@ -252,7 +257,7 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
     return (
         <ModalContainer setIsModal={setIsModal}>
             <ModalInner colour={color}>
-                <CloseIconWrapper onClick={() => setIsModal(false)}>
+                <CloseIconWrapper isDarkTheme={darkTheme} onClick={() => setIsModal(false)}>
                     <CloseIcon />
                 </CloseIconWrapper>
                 {isMobile && <PokeName>{name}</PokeName>}

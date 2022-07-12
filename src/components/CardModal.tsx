@@ -254,11 +254,9 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                 <CloseIconWrapper onClick={() => setIsModal(false)}>
                     <CloseIcon />
                 </CloseIconWrapper>
-                {/* <ModalImgWrapper colour={color}> */}
                 {isMobile && <PokeName>{name}</PokeName>}
                 <PokeImg src={img} alt={name} />
 
-                {/*      */}
                 <DescriptionBox color={color}>
                     <LabelModalWrapper>
                         {types.map((item: any, idx: number) => {
@@ -272,10 +270,12 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                     <Abilities>
                         <AbilitiesP>Abilities</AbilitiesP>
                         <AbilitiesP>
-                            <span style={{ textTransform: 'capitalize' }}>{abilities[0]?.ability?.name}</span>
-                            <span> - </span>
-                            <span style={{ textTransform: 'capitalize' }}>{abilities[1]?.ability?.name}</span>
-                            {/* {abilities.map((item:any) => <span>{item.ability.name}</span>)} */}
+                            {abilities.map((item: any, idx: number) => {
+                                if (abilities.length === idx + 1) {
+                                    return <span style={{ textTransform: 'capitalize' }}>{item.ability.name}</span>
+                                }
+                                return (<><span style={{ textTransform: 'capitalize' }}>{item.ability.name}</span><span> - </span></>)
+                            })}
                         </AbilitiesP>
                     </Abilities>
                     <ProgressWrapper>

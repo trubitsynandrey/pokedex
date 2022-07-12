@@ -17,7 +17,6 @@ function App() {
       <GlobalStyle />
       <Wrapper>
         <Header />
-        {/* <MainScreen /> */}
         <Routes>
           <Route path="/" element={<MainScreen />} />
           <Route path="/pokedex" element={<PokedexScreen />} />

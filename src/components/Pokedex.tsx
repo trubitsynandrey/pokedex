@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { breakpoints } from '../styles/breakpoints'
-import { Loader } from './Loader'
+import { breakpoints } from 'src/styles/breakpoints'
+import { Loader } from 'src/components/Loader'
 import { PaginationLoader } from './PaginationLoader'
 import { PokeCard } from './PokeCard'
 import { initialValue, usePokeContext } from './PokeContext'
@@ -9,7 +9,7 @@ import { typesUnion } from '../types'
 import { PokedexFilter } from './filterUI/PokedexFilter'
 
 const PokedexContainer = styled.div`
-    padding-top: 160px;
+    padding-top: 120px;
     flex: 1;
     padding-left: 10%;
     padding-right: 10%;
@@ -17,6 +17,10 @@ const PokedexContainer = styled.div`
         padding-left: 5%;
         padding-right: 5%;
     }
+    @media (max-width: ${breakpoints.sm}) {
+        padding-top: 90px;
+    }
+    
 `
 
 const CardsContainer = styled.div`

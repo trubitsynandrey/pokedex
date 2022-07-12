@@ -29,7 +29,7 @@ const ModalInner = styled.div`
 const TypesWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 50px;
+    column-gap: 30px;
     row-gap: 8px;
 `
 

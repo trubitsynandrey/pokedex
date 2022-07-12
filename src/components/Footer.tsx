@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { breakpoints } from '../styles/breakpoints'
+import { breakpoints } from 'src/styles/breakpoints'
 
 const FooterContainer = styled.footer`
     bottom: 0;
@@ -13,7 +13,6 @@ const FooterContainer = styled.footer`
     margin-top: 20px;
     font-size: 18px;
     line-height: 21px;
-    color: #212121;
     font-weight: 700;
     @media (max-width: ${breakpoints.lg}) {
       padding-bottom: 23px;

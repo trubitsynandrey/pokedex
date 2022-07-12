@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
+import { breakpoints } from 'src/styles/breakpoints'
 import styled from 'styled-components'
 import { InputSearch } from '../InputSearch'
 import { useIsMobile } from '../isMobileHook'
 import { usePokeContext } from '../PokeContext'
 import { ReactPortal } from '../UI/CreatePortalFunc'
-import { ContainerSelect } from './ContainerSelect'
 import { FilterModal } from './FilterModal'
 import { RangeSelector } from './RangeSelecor'
 import { TypeSelector } from './TypeSelector'
 
 const PokedexFilterWrapper = styled.div`
     width: 100%;
-    /* height: auto; */
-    background-color: white;
     z-index: 10;
-    /* margin-top: 100px; */
-    height: 100px;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
+    transition: 0.2s all ease-in-out;
+    @media (max-width: ${breakpoints.sm}) {
+        margin-bottom: 90px;
+    }
 `
 
 const FilterButton = styled.button`
@@ -35,12 +35,28 @@ const FilterButton = styled.button`
     text-align: left;
     font-family: 'Source Sans Pro',sans-serif;
 `
+const ChooseFavourite = styled.p`
+    text-align: center;
+    font-size: 35px;
+    line-height: 40px;
+    max-width: 616px;
+    align-self: center;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    @media (max-width: ${breakpoints.sm}) {
+        font-size: 24px;
+        line-height: 28px;
+    }
+`
 
 export const PokedexFilter = () => {
     const { setFilterName } = usePokeContext()
     const [isFilterModal, setIsFilterModal] = useState(false)
     const isMobile = useIsMobile()
     return (<PokedexFilterWrapper>
+        <ChooseFavourite>
+            800 <span style={{ fontWeight: 700 }}>Pokemons</span> for you to choose your favourite
+        </ChooseFavourite>
         <InputSearch onChange={(e) => setFilterName(e.target.value)} />
         {!isMobile ?
             (<div style={{ display: 'flex', gap: '64px' }}>

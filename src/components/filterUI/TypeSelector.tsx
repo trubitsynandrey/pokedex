@@ -1,7 +1,8 @@
 import React from 'react'
+import { types, typesUnion } from 'src/types'
 import styled from 'styled-components'
-import { types, typesUnion } from '../../types'
 import { usePokeContext } from '../PokeContext'
+
 import { ContainerSelect } from './ContainerSelect'
 import { TypeCheckbox } from './TypeCheckbox'
 

@@ -10,11 +10,11 @@ const IconWrapper = styled.div`
     width: 7px;
 `
 
-const TypeSelectorContainer = styled.label` 
+const TypeSelectorContainer = styled.label<{isDarkTheme: boolean}>` 
     position: relative;
     font-family: 'Source Sans Pro', sans-serif;
     display: inline-block;
-    background-color: #F2F2F2;
+    background-color: ${({isDarkTheme}) => isDarkTheme? '#4F4F4F' : '#F2F2F2'};
     border-radius: 4px;
     width: 135px;
     height: 20px;    
@@ -25,7 +25,10 @@ const TypeSelectorContainer = styled.label`
     }
     & > input[type="checkbox"]:checked + div {
             display: flex;
-        }
+    }
+    & > div {
+        background-color: ${({isDarkTheme}) => isDarkTheme? '#4F4F4F' : '#F2F2F2'};
+    }
 `
 
 interface ContainSelectorProps {
@@ -34,15 +37,17 @@ interface ContainSelectorProps {
 }
 
 export const ContainerSelect = ({ name, children }: ContainSelectorProps) => {
+    const { darkTheme } = usePokeContext()
     const turnToFalse = (obj: filterModalsType): filterModalsType => {
-        return Object.keys(obj).reduce((initial, curr) => ({...initial, [curr]: false 
+        return Object.keys(obj).reduce((initial, curr) => ({
+            ...initial, [curr]: false
         }), {} as filterModalsType)
     }
     const { filterModals, setFilterModals } = usePokeContext()
     const onToggle = () => setFilterModals(prev => ({ ...turnToFalse(prev), [name]: !prev[name] }))
 
     return (
-        <TypeSelectorContainer>
+        <TypeSelectorContainer isDarkTheme={darkTheme}>
             <input type="checkbox" onChange={onToggle} checked={filterModals[name]} />
             {name.charAt(0).toUpperCase() + name.slice(1)}
             {/* <IconWrapper>

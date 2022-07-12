@@ -4,14 +4,43 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { PokeBanner } from '../icons/Banner'
 import { breakpoints } from '../styles/breakpoints'
+import { usePokeContext } from './PokeContext'
 
-const MainContainer = styled.div`
+const SeeAllBtn = styled.button`
+    margin-top: 64px;
+    background-color: #73D677;
+    box-shadow: inset 0px -9px 0px rgba(0, 0, 0, 0.18);
+    border-radius: 11px;
+    width: 231px;
+    height: 66px;
+    text-align: center;
+    font-size: 23px;
+    line-height: 27px;
+    color:  #212121;
+    border: none;
+    padding: 17px 22px;
+    cursor: pointer;
+    font-weight: 700;
+    @media (max-width: ${breakpoints.lg}) {
+    margin-top: 33px;
+    }
+    @media (max-width: ${breakpoints.sm}) {
+        margin-top: 40px;
+        width: 312px;
+        height: 55px;
+        padding: 12px 16px;
+    }
+
+`
+
+const MainContainer = styled.div<{isDarkTheme: boolean}>`
   padding-left: 10%;
   display: flex;
   justify-content: space-between;
   padding-top: 220px;
   padding-bottom: 80px;
   flex: 1;
+  color: ${({isDarkTheme}) => isDarkTheme? 'white' : 'black'};
   @media (max-width:  ${breakpoints.lg}) {
     flex-direction: column;
     padding-top: 100px;
@@ -62,33 +91,6 @@ const DescriptionText = styled.p`
     }
 `
 
-const SeeAllBtn = styled.button`
-    margin-top: 64px;
-    background-color: #73D677;
-    box-shadow: inset 0px -9px 0px rgba(0, 0, 0, 0.18);
-    border-radius: 11px;
-    width: 231px;
-    height: 66px;
-    text-align: center;
-    font-size: 23px;
-    line-height: 27px;
-    color:  #212121;
-    border: none;
-    padding: 17px 22px;
-    cursor: pointer;
-    font-weight: 700;
-    @media (max-width: ${breakpoints.lg}) {
-    margin-top: 33px;
-    }
-    @media (max-width: ${breakpoints.sm}) {
-        margin-top: 40px;
-        width: 312px;
-        height: 55px;
-        padding: 12px 16px;
-    }
-
-`
-
 const ContainerLeft = styled.div`
     @media (max-width: ${breakpoints.lg}) {
     display: flex;
@@ -107,8 +109,9 @@ const BannerContainer = styled.div`
 `
 
 export const MainScreen = () => {
-    return (<>
-        <MainContainer>
+    const { darkTheme } = usePokeContext()
+    return (
+        <MainContainer isDarkTheme={darkTheme}>
             <>
                 <ContainerLeft>
                     <FindPokemonText>
@@ -125,8 +128,8 @@ export const MainScreen = () => {
                 </ContainerLeft>
                 <BannerContainer>
                     <PokeBanner />
-                </BannerContainer></>
+                </BannerContainer>
+                </>
         </MainContainer>
-    </>
     )
 }

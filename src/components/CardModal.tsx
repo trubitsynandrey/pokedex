@@ -124,7 +124,8 @@ const WhiteBox = styled.div`
 `
 
 const Abilities = styled(WhiteBox)`
-    max-width: 264px;
+    min-width: 264px;
+    width: fit-content;
 `
 
 const AbilitiesP = styled.p`

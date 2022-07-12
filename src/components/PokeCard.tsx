@@ -2,6 +2,7 @@ import React, { forwardRef, ReactElement, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
 import { CardModal } from './CardModal'
+import { usePokeContext } from './PokeContext'
 import { ReactPortal } from './UI/CreatePortalFunc'
 
 export const pokeColors = {
@@ -26,17 +27,17 @@ const PokeImg = styled.img`
     display: block;
 `
 
-const Card = styled.div`
+const Card = styled.div<{isDarkTheme: boolean}>`
     display: grid;
     background-color: #F6F7F9;
     height: 136px;
     border-radius: 8px;
     grid-template-columns: 1.2fr 2fr;
     overflow: hidden;
+    background-color: ${({isDarkTheme}) => isDarkTheme? '#333333' : '#F6F7F9'};
 `
 
 const CardLeftSide = styled.div`
-    
 `
 
 export type colorsType = keyof typeof pokeColors
@@ -58,14 +59,14 @@ const PokeDescription = styled.div`
 const PokeName = styled.p`
     font-size: 18px;
     line-height: 21px;
-    color: #212121;
+    /* color: #212121; */
     font-weight: 700;
     text-transform: capitalize;
     margin-bottom: 18px;
 `
 
-export const PropertiesCircle = styled.div`
-    border: 3px solid #212121;
+export const PropertiesCircle = styled.div<{isDarkTheme: boolean}>`
+    border: 3px solid ${({isDarkTheme}) => isDarkTheme? '#FFFFFF' : '#212121'};
     border-radius: 999px;
     display: flex;
     justify-content: center;
@@ -76,7 +77,7 @@ export const PropertiesCircle = styled.div`
 export const PropertyName = styled.span`
     font-size: 12px;
     line-height: 14px;
-    color: #4B4B4B;
+    /* color: #4B4B4B; */
     text-transform: capitalize;
     @media (max-width: ${breakpoints.lg}) {
         font-size: 10px;
@@ -94,7 +95,7 @@ export const Label = styled.div`
     box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.18);
     font-size: 12px;
     line-height: 14px;
-    color: #212121;
+    /* color: #212121; */
     text-align: center;
     background-color: #73D677;
     text-transform: capitalize;
@@ -125,7 +126,7 @@ interface PokeCardProps {
 
 export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, stats, experience, abilities }: PokeCardProps, ref: any): ReactElement => {
     const [isCardModal, setIsCardModal] = useState(false);
-
+    const { darkTheme } = usePokeContext()
     useEffect(() => {
         if (isCardModal) {
             document.body.style.overflow = 'hidden'
@@ -148,7 +149,7 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                         types={types}
                     />
                 </ReactPortal>}
-            <Card onClick={() => setIsCardModal(true)} ref={ref}>
+            <Card isDarkTheme={darkTheme} onClick={() => setIsCardModal(true)} ref={ref}>
 
                 <CardLeftSide />
                 <PokeDescription>
@@ -157,12 +158,12 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                     </PokeName>
                     <div style={{ display: 'flex', gap: '12px' }}>
                         <PropertiesBox>
-                            <PropertiesCircle>{attack}</PropertiesCircle>
+                            <PropertiesCircle isDarkTheme={darkTheme}>{attack}</PropertiesCircle>
                             <PropertyName>Attack</PropertyName>
                         </PropertiesBox>
 
                         <PropertiesBox>
-                            <PropertiesCircle>{defense}</PropertiesCircle>
+                            <PropertiesCircle isDarkTheme={darkTheme}>{defense}</PropertiesCircle>
                             <PropertyName>Defense</PropertyName>
                         </PropertiesBox>
                     </div>

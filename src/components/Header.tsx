@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useIsMobile } from './isMobileHook'
 import { ReactPortal } from './UI/CreatePortalFunc'
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.header<{ isDarkTheme: boolean }>`
     width: 100%;
     position: fixed;
     display: flex;
@@ -18,7 +18,7 @@ const HeaderContainer = styled.header`
     align-items: center;
     padding-left: 10%;
     padding-right: 10%;
-    background-color: #F5DB13;
+    background-color: ${({ isDarkTheme }) => isDarkTheme ? '#4F4F4F' : '#F5DB13'};
     box-shadow: 0px 4px 16px rgba(1, 28, 64, 0.2);
     justify-content: space-between;
     z-index: 2;
@@ -29,11 +29,20 @@ const HeaderContainer = styled.header`
     @media (max-width: ${breakpoints.sm}) {
         height: 64px;   
     }
+    transition: 0.2s ease-in-out;
 `
 
-const Navigation = styled.div`
+const Navigation = styled.div<{ isDarkTheme: boolean }>`
     display: flex;
     gap: 55px;
+    & > a {
+        color: ${({ isDarkTheme }) => isDarkTheme ? 'white' : 'black'};
+    }
+    & > a.active {
+        border-bottom: 3px solid ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : '#212121'};
+        color: ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : 'black'};
+        /* color: ${({ isDarkTheme }) => isDarkTheme ? 'white' : 'black'}; */
+    }
     align-items: center;
     @media (max-width: ${breakpoints.lg}) {
         gap: 40px;
@@ -43,13 +52,12 @@ const Navigation = styled.div`
 const NavItem = styled(NavLink)`
     text-decoration: none;
     outline: none;
-    color: black;
     font-size: 25px;
     line-height: 29px;
     cursor: pointer;
     height: 29px;
     &.active {
-        border-bottom: 3px solid #212121;
+        /* border-bottom: 3px solid #212121; */
     }
     @media (max-width: ${breakpoints.lg}) {
         font-size: 19px;
@@ -74,22 +82,33 @@ height: 63px;
      }
 `
 
-export const Header = () => {
-    const { isNavModal, setIsNavModal } = usePokeContext()
+const BurgerMenuWrapper = styled.div<{isDarkTheme: boolean}>`
+& > svg > rect {
+    fill: ${({ isDarkTheme }) => isDarkTheme ? 'white' : '#212121'};;
+}
+`
 
+export const Header = () => {
+    const { isNavModal, setIsNavModal, darkTheme, setDarkTheme } = usePokeContext()
+    const setDark = () => {
+        setDarkTheme(prev => !prev)
+    }
     const isMobile = useIsMobile()
     return (
-        <HeaderContainer>
+        <HeaderContainer isDarkTheme={darkTheme}>
             <LogoContainer to="/">
                 <Logo />
             </LogoContainer>
-            {!isMobile ? <Navigation>
+            {!isMobile ? <Navigation isDarkTheme={darkTheme}>
                 <NavItem to={'/'}>Home</NavItem>
                 <NavItem to={'/pokedex'}>Pokédex</NavItem>
                 <NavItem to={'/ledendaries'}>Legendaries</NavItem>
                 <NavItem to={'/compare'}>Compare</NavItem>
-                <ToggleSwitch />
-            </Navigation> : <BurgerMenu onClick={() => setIsNavModal(true)} />}
+                <ToggleSwitch onToggle={setDark} isToggled={darkTheme} />
+            </Navigation> : 
+            <BurgerMenuWrapper isDarkTheme={darkTheme}> 
+                    <BurgerMenu onClick={() => setIsNavModal(true)} />
+            </BurgerMenuWrapper>}
             {isNavModal && isMobile && <ReactPortal><BurgerModal setIsModal={setIsNavModal} /></ReactPortal>}
         </HeaderContainer>
     )

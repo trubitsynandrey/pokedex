@@ -1,8 +1,9 @@
 import React, { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
+import { usePokeContext } from './PokeContext'
 
-const InputWrapper = styled.div`
-    background-color: #F2F2F2;
+const InputWrapper = styled.div<{isDarkTheme: boolean}>`
+    background-color: ${({isDarkTheme}) => isDarkTheme? '#4F4F4F' : '#F2F2F2'};
     width: 100%;
     height: 36px;
     display: flex;
@@ -12,7 +13,7 @@ const InputWrapper = styled.div`
     margin-bottom: 20px;
 `
 
-const Input = styled.input`
+const Input = styled.input<{isDarkTheme: boolean}>`
     border: none;
     width: 100%;
     background-color: inherit;
@@ -25,7 +26,7 @@ const Input = styled.input`
     font-size: 16px;
     line-height: 20px;
     font-family: 'Source Sans Pro', sans-serif;
-    color:  rgba(33, 33, 33, 0.8);
+    color: ${({isDarkTheme}) => isDarkTheme? '#F2F2F2' : 'rgba(33, 33, 33, 0.8)'};
 `
 
 interface InputSeatchProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -33,9 +34,10 @@ interface InputSeatchProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const InputSearch = ({...rest}: InputSeatchProps) => {
+    const { darkTheme } = usePokeContext()
     return (
-        <InputWrapper>
-            <Input placeholder='Encuentra tu pokémon...' {...rest}/>
+        <InputWrapper isDarkTheme={darkTheme}>
+            <Input isDarkTheme={darkTheme} placeholder='Encuentra tu pokémon...' {...rest}/>
         </InputWrapper>
     )
 }

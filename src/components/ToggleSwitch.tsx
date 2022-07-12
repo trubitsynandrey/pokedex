@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components';
 import { DarkThemeColor } from '../icons/DarkThemeColor';
 import { LightThemeColor } from '../icons/LightThemeColor';
@@ -34,10 +34,15 @@ const SwitchContainer = styled.label`
         }
 `
 
+interface ToggleSwitchProps {
+    onToggle: () => void,
+    isToggled: boolean,
+}
 
-export const ToggleSwitch = () => {
-    const [isToggled, setIsToggled] = useState(false);
-    const onToggle = () => setIsToggled(!isToggled)
+
+export const ToggleSwitch = ({onToggle, isToggled}: ToggleSwitchProps) => {
+    // const [isToggled, setIsToggled] = useState(false);
+    // const onToggle = () => setIsToggled(!isToggled)
     return (
         <SwitchContainer>
             <input type="checkbox" onChange={onToggle} />

@@ -32,6 +32,8 @@ interface initialValueProps {
   }>>,
   filterName: string,
   setFilterName: React.Dispatch<React.SetStateAction<string>>,
+  darkTheme: boolean,
+  setDarkTheme: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 export const initialValue: initialValueProps = {
@@ -58,6 +60,8 @@ export const initialValue: initialValueProps = {
   setFilterRanges: noop,
   filterName: '',
   setFilterName: noop,
+  darkTheme: false,
+  setDarkTheme: noop,
 }
 
 
@@ -70,6 +74,8 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
   const [filterModals, setFilterModals] = useState(initialValue.filterModals)
   const [filterRanges, setFilterRanges] = useState(initialValue.filterRanges)
   const [filterName, setFilterName] = useState('')
+  const [darkTheme, setDarkTheme] = useState(false)
+
 
   useEffect(() => {
     if (isNavModal) {
@@ -83,6 +89,7 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     setIsNavModal(false)
     setFilterModals(initialValue.filterModals)
     setFilterRanges(initialValue.filterRanges)
+    setFilterTypes(initialValue.filterTypes)
   }, [location])
   const value = {
     isNavModal,
@@ -95,6 +102,8 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     setFilterRanges,
     filterName,
     setFilterName,
+    darkTheme,
+    setDarkTheme,
   }
   return (
     <Context.Provider value={value}>{children}</Context.Provider>

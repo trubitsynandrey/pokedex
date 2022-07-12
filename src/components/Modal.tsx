@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Logo } from '../icons/Logo'
+import { usePokeContext } from './PokeContext'
 import { ToggleSwitch } from './ToggleSwitch'
 import { ModalContainer } from './UI/ModalContainer'
 
@@ -14,13 +15,13 @@ const ModalBack = styled.div`
     right: 0;
     top: 0;
 `
-const ModalInner = styled.div`
+const ModalInner = styled.div<{isDarkTheme: boolean}>`
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
     flex-direction: column;
-    background-color: #F5DB13;
+    background-color: ${({isDarkTheme}) => isDarkTheme? '#4F4F4F' : '#F5DB13'};
     height: 400px;
     width: 100%;
     z-index: 5;
@@ -30,6 +31,13 @@ const ModalInner = styled.div`
     gap: 16px;
     padding: 38px 0px;
     transition: 0.2s ease-in-out;
+    & > a {
+        color: ${({isDarkTheme}) => isDarkTheme? 'white' : 'black'};
+    }
+    & > a.active {
+        border-bottom: 3px solid ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : '#212121'};
+        color: ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : 'black'};
+    }
 `
 const LogoContainer = styled.div`
 width: 138px;
@@ -58,9 +66,13 @@ interface BurgerModalProps {
 }
 
 export const BurgerModal = ({ setIsModal }: BurgerModalProps) => {
+    const { darkTheme, setDarkTheme } = usePokeContext()
+    const setDark = () => {
+        setDarkTheme(prev => !prev)
+    }
     return (
         <ModalContainer setIsModal={setIsModal}>
-            <ModalInner>
+            <ModalInner isDarkTheme={darkTheme}>
                 <LogoContainer>
                     <Logo />
                 </LogoContainer>
@@ -68,7 +80,7 @@ export const BurgerModal = ({ setIsModal }: BurgerModalProps) => {
                 <NavItem to="/pokedex">Pokédex</NavItem>
                 <NavItem to="/ledendaries">Legendaries</NavItem>
                 <NavItem to="/compare">Compare</NavItem>
-                <ToggleSwitch />
+                <ToggleSwitch onToggle={setDark} isToggled={false} />
             </ModalInner>
         </ModalContainer>
     )

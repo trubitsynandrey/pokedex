@@ -33,15 +33,22 @@ const HeaderContainer = styled.header<{ isDarkTheme: boolean }>`
 `
 
 const Navigation = styled.div<{ isDarkTheme: boolean }>`
+    position: relative;
     display: flex;
     gap: 55px;
     & > a {
         color: ${({ isDarkTheme }) => isDarkTheme ? 'white' : 'black'};
     }
+    
     & > a.active {
-        border-bottom: 3px solid ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : '#212121'};
         color: ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : 'black'};
-        /* color: ${({ isDarkTheme }) => isDarkTheme ? 'white' : 'black'}; */
+    }
+    & > a.active::after {
+       content: "";
+       display: block;
+       width: 80%;
+       background-color: ${({ isDarkTheme }) => isDarkTheme ? '#EDC607' : '#212121'};
+       height: 4px;
     }
     align-items: center;
     @media (max-width: ${breakpoints.lg}) {
@@ -102,7 +109,7 @@ export const Header = () => {
             {!isMobile ? <Navigation isDarkTheme={darkTheme}>
                 <NavItem to={'/'}>Home</NavItem>
                 <NavItem to={'/pokedex'}>Pokédex</NavItem>
-                <NavItem to={'/ledendaries'}>Legendaries</NavItem>
+                <NavItem to={'/legendaries'}>Legendaries</NavItem>
                 <NavItem to={'/compare'}>Compare</NavItem>
                 <ToggleSwitch onToggle={setDark} isToggled={darkTheme} />
             </Navigation> : 

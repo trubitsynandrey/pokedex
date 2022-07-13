@@ -9,7 +9,7 @@ import { typesUnion } from '../types'
 import { PokedexFilter } from './filterUI/PokedexFilter'
 
 const PokedexContainer = styled.div`
-    padding-top: 120px;
+padding-top: 120px;
     flex: 1;
     padding-left: 10%;
     padding-right: 10%;
@@ -49,45 +49,19 @@ const LoaderWrapper = styled.div`
 
 
 export const PokedexScreen = () => {
-    const [data, setData] = useState<any[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [isLoadingMore, setIsLoadingMore] = useState(false)
-    const { filterTypes, filterRanges, filterName } = usePokeContext()
-    const [offset, setOffset] = useState(0)
+    const { filterTypes, 
+            filterRanges, 
+            filterName, 
+            isLoadingMore, 
+            setOffset, 
+            isLoading,
+            data,
+         } = usePokeContext()
     const isFilter = Object.values(filterTypes).some(bool => bool)
     console.log(isFilter, 'isfilter')
 
-    const getData = async (offset: number = 0, limit: number = 24) => {
-        setIsLoadingMore(true)
-        let data = [];
-        const pokemons = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`)
-            .then(res => res.json())
-        const requests = await pokemons.results
-            .map((item: { name: string, url: string }) => fetch(item.url).then(res => res.json()))
-        data = await Promise.all(requests)
-        const species = await data.map(item => fetch(item.species.url).then(res => res.json()))
-        const dataSpecies = await Promise.all(species)
-        const color = dataSpecies.map(item => item.color.name)
-        const newdata = data.map((item, idx) => {
-            return Object.assign(item, { colour: color[idx] }, {})
-        })
-        setIsLoadingMore(false)
-        return newdata;
-    }
-
     const watcher = useRef<IntersectionObserver | null>(null);
 
-    useEffect(() => {
-        getData(offset).then(res => {
-            console.log(res)
-            if (offset === 0) {
-                setData(res)
-                setIsLoading(false)
-            } else {
-                setData(prev => [...prev, ...res])
-            }
-        })
-    }, [offset])
 
     const lastUserRef = useCallback((node: Element) => {
         if (isLoadingMore) return;

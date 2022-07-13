@@ -28,11 +28,11 @@ const PokeImg = styled.img`
 `
 
 const Card = styled.div<{isDarkTheme: boolean}>`
-    display: grid;
+    display: flex;
     background-color: #F6F7F9;
     height: 136px;
     border-radius: 8px;
-    grid-template-columns: 1.2fr 2fr;
+    /* grid-template-columns: 1.6fr 2fr; */
     overflow: hidden;
     background-color: ${({isDarkTheme}) => isDarkTheme? '#333333' : '#F6F7F9'};
 `
@@ -46,14 +46,16 @@ export const CardRightImg = styled.div<{ colour: colorsType }>`
 background: 
 ${({ colour }) => `linear-gradient(270deg, ${pokeColors[colour][1]} 0.15%, ${pokeColors[colour][0]} 100%)`};
 height: inherit;
+/* align-self: flex-end; */
+flex: 1;
 `
 
 
 //poke description
 const PokeDescription = styled.div`
-    position: absolute;
-    margin-top: 6px;
-    margin-left: 20px;
+    padding-top: 6px;
+    padding-left: 20px;
+    margin-right: 3px;
 `
 
 const PokeName = styled.p`
@@ -79,6 +81,7 @@ export const PropertyName = styled.span`
     line-height: 14px;
     /* color: #4B4B4B; */
     text-transform: capitalize;
+    text-align: center;
     @media (max-width: ${breakpoints.lg}) {
         font-size: 10px;
     }
@@ -86,6 +89,7 @@ export const PropertyName = styled.span`
 const PropertiesBox = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 6px;
 `
 export const Label = styled.div`
@@ -99,6 +103,13 @@ export const Label = styled.div`
     text-align: center;
     background-color: #73D677;
     text-transform: capitalize;
+`
+
+const TypesWrapper = styled.div`
+    display: flex; 
+    gap: 12px;
+    margin-top: 12px;
+    position: absolute;
 `
 
 export const labelColours = {
@@ -151,7 +162,7 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                 </ReactPortal>}
             <Card isDarkTheme={darkTheme} onClick={() => setIsCardModal(true)} ref={ref}>
 
-                <CardLeftSide />
+                {/* <CardLeftSide /> */}
                 <PokeDescription>
                     <PokeName>
                         {name}
@@ -167,12 +178,12 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                             <PropertyName>Defense</PropertyName>
                         </PropertiesBox>
                     </div>
-                    <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+                    <TypesWrapper>
                         {types.map((item: any, idx: number) => {
                             const labelName: keyof typeof labelColours = item.type.name;
                             return <Label key={idx} style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
                         })}
-                    </div>
+                    </TypesWrapper>
                 </PokeDescription>
                 <CardRightImg colour={color}>
                     <PokeImg src={img} />

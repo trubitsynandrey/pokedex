@@ -35,6 +35,12 @@ interface initialValueProps {
   darkTheme: boolean,
   setDarkTheme: React.Dispatch<React.SetStateAction<boolean>>,
   noFilter: boolean,
+  data: any[],
+  isLoadingMore: boolean,
+  isLoading: boolean,
+  offset: number,
+  setOffset: React.Dispatch<React.SetStateAction<number>>,
+
 }
 
 export const initialValue: initialValueProps = {
@@ -64,6 +70,11 @@ export const initialValue: initialValueProps = {
   darkTheme: false,
   setDarkTheme: noop,
   noFilter: true,
+  data: [],
+  isLoadingMore: false,
+  isLoading: true,
+  offset: 0,
+  setOffset:noop,
 }
 
 
@@ -77,13 +88,52 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
   const [filterRanges, setFilterRanges] = useState(initialValue.filterRanges)
   const [filterName, setFilterName] = useState('')
   const [darkTheme, setDarkTheme] = useState(false)
+  const [data, setData] = useState<any[]>([])
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [offset, setOffset] = useState(0)
 
-  function jsonEqual(a: any,b: any) {
+
+
+  const getData = async (offset: number = 0, limit: number = 24) => {
+
+    let data = [];
+    const pokemons = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`)
+      .then(res => res.json())
+    const requests = await pokemons.results
+      .map((item: { name: string, url: string }) => fetch(item.url).then(res => res.json()))
+    data = await Promise.all(requests)
+    const species = await data.map(item => fetch(item.species.url).then(res => res.json()))
+    const dataSpecies = await Promise.all(species)
+    const color = dataSpecies.map(item => item.color.name)
+    const newdata = data.map((item, idx) => {
+      return Object.assign(item, { colour: color[idx] }, {})
+    })
+
+    return newdata;
+  }
+
+  useEffect(() => {
+    setIsLoadingMore(true)
+    getData(offset).then(res => {
+      console.log(res)
+      if (offset === 0) {
+        setData(res)
+        setIsLoading(false)
+        setIsLoadingMore(false)
+      } else {
+        setData(prev => [...prev, ...res])
+        setIsLoadingMore(false)
+      }
+    })
+  }, [offset])
+
+  function jsonEqual(a: any, b: any) {
     return JSON.stringify(a) === JSON.stringify(b);
   }
 
-  const noFilter = jsonEqual(filterTypes, objectFilterTypes) 
-  && jsonEqual(filterRanges, initialValue.filterRanges)
+  const noFilter = jsonEqual(filterTypes, objectFilterTypes)
+    && jsonEqual(filterRanges, initialValue.filterRanges)
 
 
 
@@ -116,6 +166,11 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     darkTheme,
     setDarkTheme,
     noFilter,
+    data,
+    isLoadingMore,
+    isLoading,
+    offset,
+    setOffset,
   }
   return (
     <Context.Provider value={value}>{children}</Context.Provider>

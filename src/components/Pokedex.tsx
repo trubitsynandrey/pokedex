@@ -71,7 +71,6 @@ export const PokedexScreen = () => {
         const newdata = data.map((item, idx) => {
             return Object.assign(item, { colour: color[idx] }, {})
         })
-        // setOffset(prev => prev + 20)
         setIsLoadingMore(false)
         return newdata;
     }
@@ -119,7 +118,6 @@ export const PokedexScreen = () => {
                     .filter(item => {
                         if (isFilter) {
                             const types = item.types
-                            // const typeName: typesUnion = item.types[0]?.type.name
                             return types.some((item: any) => {
                                 const name: typesUnion = item.type.name
                                 return name && filterTypes[name]

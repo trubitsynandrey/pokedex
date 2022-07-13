@@ -13,7 +13,6 @@ const TypeSelectorWindow = styled.div`
     
     background-color: #F2F2F2;
     flex-direction: column;
-    /* align-items: center; */
     position: absolute;
     width: inherit;
     z-index: 50;
@@ -33,7 +32,6 @@ export const TypeSelector = () => {
             ...prev, [item]: !filterTypes[item]
         }))
     }
-    console.log(filterTypes, 'filter')
     return (
         <ContainerSelect name={'type'}>
             <TypeSelectorWindow>

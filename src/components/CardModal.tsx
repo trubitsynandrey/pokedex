@@ -278,9 +278,9 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                         <AbilitiesP>
                             {abilities.map((item: any, idx: number) => {
                                 if (abilities.length === idx + 1) {
-                                    return <span style={{ textTransform: 'capitalize' }}>{item.ability.name}</span>
+                                    return <span key={idx} style={{ textTransform: 'capitalize' }}>{item.ability.name}</span>
                                 }
-                                return (<><span style={{ textTransform: 'capitalize' }}>{item.ability.name}</span><span> - </span></>)
+                                return (<span key={idx}><span key={idx} style={{ textTransform: 'capitalize' }}>{item.ability.name}</span><span> - </span></span>)
                             })}
                         </AbilitiesP>
                     </Abilities>

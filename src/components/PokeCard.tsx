@@ -168,9 +168,9 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                         </PropertiesBox>
                     </div>
                     <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
-                        {types.map((item: any) => {
+                        {types.map((item: any, idx: number) => {
                             const labelName: keyof typeof labelColours = item.type.name;
-                            return <Label style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
+                            return <Label key={idx} style={{ backgroundColor: labelColours[labelName] }}>{labelName}</Label>
                         })}
                     </div>
                 </PokeDescription>

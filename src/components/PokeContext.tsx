@@ -34,6 +34,7 @@ interface initialValueProps {
   setFilterName: React.Dispatch<React.SetStateAction<string>>,
   darkTheme: boolean,
   setDarkTheme: React.Dispatch<React.SetStateAction<boolean>>,
+  noFilter: boolean,
 }
 
 export const initialValue: initialValueProps = {
@@ -62,6 +63,7 @@ export const initialValue: initialValueProps = {
   setFilterName: noop,
   darkTheme: false,
   setDarkTheme: noop,
+  noFilter: true,
 }
 
 
@@ -75,6 +77,15 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
   const [filterRanges, setFilterRanges] = useState(initialValue.filterRanges)
   const [filterName, setFilterName] = useState('')
   const [darkTheme, setDarkTheme] = useState(false)
+
+  function jsonEqual(a: any,b: any) {
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+
+  const noFilter = jsonEqual(filterTypes, objectFilterTypes) 
+  && jsonEqual(filterRanges, initialValue.filterRanges)
+
+
 
 
   useEffect(() => {
@@ -104,6 +115,7 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     setFilterName,
     darkTheme,
     setDarkTheme,
+    noFilter,
   }
   return (
     <Context.Provider value={value}>{children}</Context.Provider>

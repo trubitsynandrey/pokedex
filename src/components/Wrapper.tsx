@@ -12,14 +12,13 @@ const WrapperContainer = styled.div<{isHome: boolean, darkTheme: boolean}>`
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
-        color: ${({darkTheme}) => darkTheme? 'white' : 'black'}
+        color: ${({darkTheme}) => darkTheme? 'white' : 'black'};
 `
 
 export const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
     const { darkTheme } = usePokeContext()
     const match = useMatch('/')
     const isHome = match !== null;
-    console.log('matches', match)
     return (
         <WrapperContainer darkTheme={darkTheme} isHome={isHome}>
             {children}

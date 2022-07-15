@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { usePokeContext } from '../PokeContext'
 import { filterModalsType, keysFilterModals } from '../../types'
+import { turnToFalse } from 'src/utils'
 
 const IconWrapper = styled.div`
     position: absolute;
@@ -37,13 +38,7 @@ interface ContainSelectorProps {
 }
 
 export const ContainerSelect = ({ name, children }: ContainSelectorProps) => {
-    const { darkTheme } = usePokeContext()
-    const turnToFalse = (obj: filterModalsType): filterModalsType => {
-        return Object.keys(obj).reduce((initial, curr) => ({
-            ...initial, [curr]: false
-        }), {} as filterModalsType)
-    }
-    const { filterModals, setFilterModals } = usePokeContext()
+    const { darkTheme, filterModals, setFilterModals } = usePokeContext()
     const onToggle = () => setFilterModals(prev => ({ ...turnToFalse(prev), [name]: !prev[name] }))
 
     return (

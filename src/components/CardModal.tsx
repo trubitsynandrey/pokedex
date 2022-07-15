@@ -6,6 +6,7 @@ import { breakpoints } from '../styles/breakpoints'
 import { useIsMobile } from './isMobileHook'
 import { colorsType, Label, labelColours, pokeColors, PropertyName } from './PokeCard'
 import { usePokeContext } from './PokeContext'
+import { LabeledProgressBar } from './UI/LabeledProgressBar'
 import { ModalContainer } from './UI/ModalContainer'
 
 const ModalBack = styled.div`
@@ -286,18 +287,18 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                     </Abilities>
                     <ProgressWrapper>
                         <div style={{ flex: 1 }}>
-                            <p>Health Points</p>
-                            <p style={{ fontWeight: '700' }}>{stats[0].base_stat}</p>
-                            <ProgressBarContainer>
-                                <ProgressBar percentage={valueToPercentage(stats[0].base_stat)} style={{ background: 'linear-gradient(270deg, #64D368 0.15%, #64D368 70.88%)' }} />
-                            </ProgressBarContainer>
+                            <LabeledProgressBar 
+                                style={{background: 'linear-gradient(270deg, #64D368 0.15%, #64D368 70.88%)' }} 
+                                labelName={'Health Points'} 
+                                stat={stats[0].base_stat}
+                            />
                         </div>
                         <div style={{ flex: 1 }}>
-                            <p>Experience</p>
-                            <p style={{ fontWeight: '700' }}>{experience}</p>
-                            <ProgressBarContainer>
-                                <ProgressBar percentage={valueToPercentage(experience)} style={{ background: 'linear-gradient(180deg, #F5DB13 0%, #F2B807 100%)' }} />
-                            </ProgressBarContainer>
+                            <LabeledProgressBar 
+                                style={{background: 'linear-gradient(180deg, #F5DB13 0%, #F2B807 100%)' }} 
+                                labelName={'Experience'} 
+                                stat={experience} 
+                            />
                         </div>
                     </ProgressWrapper>
                     <PropertiesContainer>

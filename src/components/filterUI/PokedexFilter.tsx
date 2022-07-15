@@ -50,14 +50,30 @@ const ChooseFavourite = styled.p`
 `
 
 export const PokedexFilter = () => {
-    const { setFilterName } = usePokeContext()
+    const { filterName,setFilterName, data } = usePokeContext()
+    const [suggestions, setSuggestions] = useState<string[]>([])
+
+    const onChangeHandler = (text: string) => {
+        let matches = [];
+        if (text.length > 0) {
+            matches = data.filter(item => {
+                const regexp = new RegExp(`${text}`, "gi");
+                return item.name.match(regexp)
+            }).map(item => item.name)
+        }
+        console.log(matches, 'matches')
+        setSuggestions(matches)
+        setFilterName(text)
+        
+    }
+
     const [isFilterModal, setIsFilterModal] = useState(false)
     const isMobile = useIsMobile()
     return (<PokedexFilterWrapper>
         <ChooseFavourite>
             800 <span style={{ fontWeight: 700 }}>Pokemons</span> for you to choose your favourite
         </ChooseFavourite>
-        <InputSearch onChange={(e) => setFilterName(e.target.value)} />
+        <InputSearch setSuggestions={setSuggestions} value={filterName} setName={setFilterName} suggestions={suggestions} onChange={(e) => onChangeHandler(e.target.value)} />
         {!isMobile ?
             (<div style={{ display: 'flex', gap: '64px' }}>
                 <TypeSelector />

@@ -24,6 +24,7 @@ const ModalInner = styled.div`
     gap: 16px;
     padding: 30px 45px;
     transition: 0.2s ease-in-out;   
+    z-index: 99;
 `
 
 const TypesWrapper = styled.div`

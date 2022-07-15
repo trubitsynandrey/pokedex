@@ -32,7 +32,6 @@ const Card = styled.div<{isDarkTheme: boolean}>`
     background-color: #F6F7F9;
     height: 136px;
     border-radius: 8px;
-    /* grid-template-columns: 1.6fr 2fr; */
     overflow: hidden;
     background-color: ${({isDarkTheme}) => isDarkTheme? '#333333' : '#F6F7F9'};
 `
@@ -46,7 +45,6 @@ export const CardRightImg = styled.div<{ colour: colorsType }>`
 background: 
 ${({ colour }) => `linear-gradient(270deg, ${pokeColors[colour][1]} 0.15%, ${pokeColors[colour][0]} 100%)`};
 height: inherit;
-/* align-self: flex-end; */
 flex: 1;
 `
 
@@ -161,8 +159,6 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                     />
                 </ReactPortal>}
             <Card isDarkTheme={darkTheme} onClick={() => setIsCardModal(true)} ref={ref}>
-
-                {/* <CardLeftSide /> */}
                 <PokeDescription>
                     <PokeName>
                         {name}

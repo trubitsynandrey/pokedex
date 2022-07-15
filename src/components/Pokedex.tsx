@@ -104,8 +104,6 @@ export const PokedexScreen = () => {
                         if (!isRangesFilter) {
                             const exp = item.base_experience
                             const attack = item.stats[1].base_stat
-                            console.log(exp, attack)
-                            console.log(filterRanges.attack.min < +attack && filterRanges.attack.max > +attack, 'attack')
                             return filterRanges.attack.min < +attack && filterRanges.attack.max > +attack && filterRanges.experience.min < +exp && filterRanges.experience.max > +exp
                         } else {
                             return true;

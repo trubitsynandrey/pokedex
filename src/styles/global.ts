@@ -11,6 +11,10 @@ export const GlobalStyle = createGlobalStyle`
         margin:0 auto;
     }
 
+    .slick-list {
+        /* overflow: visible; */
+    }
+
     @keyframes pikaMovement {
         from {
             transform: translateY(0%);

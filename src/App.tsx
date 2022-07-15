@@ -8,6 +8,8 @@ import { PokeContext } from './components/PokeContext';
 import { PokedexScreen } from './components/Pokedex';
 import { Wrapper } from './components/Wrapper';
 import { GlobalStyle } from './styles/global';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 
 

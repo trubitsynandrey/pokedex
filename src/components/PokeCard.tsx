@@ -131,9 +131,10 @@ interface PokeCardProps {
     stats: any,
     experience: number,
     abilities: any,
+    item: any,
 }
 
-export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, stats, experience, abilities }: PokeCardProps, ref: any): ReactElement => {
+export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, stats, experience, abilities, item }: PokeCardProps, ref: any): ReactElement => {
     const [isCardModal, setIsCardModal] = useState(false);
     const { darkTheme } = usePokeContext()
     useEffect(() => {
@@ -156,6 +157,7 @@ export const PokeCard = forwardRef(({ name, attack, defense, types, color, img, 
                         experience={experience}
                         abilities={abilities}
                         types={types}
+                        item={item}
                     />
                 </ReactPortal>}
             <Card isDarkTheme={darkTheme} onClick={() => setIsCardModal(true)} ref={ref}>

@@ -57,8 +57,6 @@ interface CarouselProps {
 
 
 export const Carousel = ({setSlide}: CarouselProps) => {
-    // const [slide, setSlide] = useState<number>(0)
-    // console.log(slide, 'slide')
     const settings: Settings = {
         dots: false,
         infinite: true,

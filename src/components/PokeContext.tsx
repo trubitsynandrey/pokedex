@@ -74,7 +74,7 @@ export const initialValue: initialValueProps = {
   isLoadingMore: false,
   isLoading: true,
   offset: 0,
-  setOffset:noop,
+  setOffset: noop,
 }
 
 
@@ -93,7 +93,14 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [offset, setOffset] = useState(0)
 
-
+  const parserToEnd = (arr: any): any => {
+    if (arr?.evolves_to?.length === 0) {
+      const bestPokemonId = +arr.species.url.match(/\d+/g)[1];
+      return bestPokemonId
+    } else {
+      return parserToEnd(arr?.evolves_to[0])
+    }
+  }
 
   const getData = async (offset: number = 0, limit: number = 24) => {
 
@@ -103,11 +110,42 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     const requests = await pokemons.results
       .map((item: { name: string, url: string }) => fetch(item.url).then(res => res.json()))
     data = await Promise.all(requests)
+
     const species = await data.map(item => fetch(item.species.url).then(res => res.json()))
     const dataSpecies = await Promise.all(species)
+    const evolutionChainRequests = await dataSpecies.map(item => fetch(item.evolution_chain.url).then(res => res.json()))
+    const evolutionChain = await Promise.all(evolutionChainRequests)
+    const evolutionChainId= evolutionChain.map(item => item.chain).map(item => {
+      // console.log(item, 'itemforparse')
+      return parserToEnd(item)})
+    const evolutionChainIdSet = Array.from(new Set(evolutionChainId))
+    console.log(new Set(evolutionChainId), 'chainid')
+    const higherPokemonsRequests = evolutionChainIdSet.map(item => fetch(`https://pokeapi.co/api/v2/pokemon/${item}`).then(res => res.json()))
+    const higherPokemonsResult = await Promise.all(higherPokemonsRequests)
+    console.log(higherPokemonsResult, 'higher')
+    const higherStats = await higherPokemonsResult.map((item: any) => ({
+        id: item.id,
+        experience: item.base_experience,
+        ...item.stats.reduce((prev: any, curr: any) => {
+          return {...prev, [curr.stat.name]: curr.base_stat}
+        }, {})
+    }))
+    const idToStats = evolutionChainId.map((item) => {
+      const stats = higherStats.find(stat => {
+        // console.log(item, 'statsFind')
+        return stat.id === item})
+        // console.log(stats, 'stats')
+      return stats;
+    })
+    
+    // console.log(higherStats, "higherstats")
+    // console.log(evolutionChainId, 'evolutionCHain')
     const color = dataSpecies.map(item => item.color.name)
     const newdata = data.map((item, idx) => {
-      return Object.assign(item, { colour: color[idx] }, {})
+      return Object.assign(item, 
+        { colour: color[idx],
+          higherStats: idToStats[idx]
+        }, {})
     })
 
     return newdata;
@@ -134,8 +172,6 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
 
   const noFilter = jsonEqual(filterTypes, objectFilterTypes)
     && jsonEqual(filterRanges, initialValue.filterRanges)
-
-
 
 
   useEffect(() => {

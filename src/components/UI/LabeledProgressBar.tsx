@@ -1,4 +1,5 @@
-import React from 'react'
+import { truncate } from 'fs/promises'
+import React, { useEffect, useRef, useState } from 'react'
 import { breakpoints } from 'src/styles/breakpoints'
 import { valueToPercentage } from 'src/utils'
 import styled, { CSSProperties } from 'styled-components'
@@ -35,26 +36,35 @@ const ProgressBarContainer = styled.div`
 const ProgressBar = styled.div<{ percentage: string }>`
     position: absolute;
     background-color: black;
-    width: ${({ percentage }) => percentage};
+    width: 0%;
     height: inherit;
+    animation: progress 0.4s linear forwards;
+    /* &[data-filling=true] {
+        
+    } */
+    @keyframes progress {
+        100% {
+            width: ${({ percentage }) => percentage}
+        }
+    }
 `
 
-interface LabeledProgressBar {
+interface LabeledProgressBarProps {
     labelName: string,
     stat: number,
     style: CSSProperties,
     styleContainer?: CSSProperties,
+    maxStat: number,
 }
 
-export const LabeledProgressBar = ({labelName, stat, style, styleContainer }: LabeledProgressBar) => {
+export const LabeledProgressBar = ({labelName, stat, style, styleContainer, maxStat }: LabeledProgressBarProps) => {
     return (
         <div style={{flex: 1, ...styleContainer}}>
             <p>{labelName}</p>
             <p style={{ fontWeight: '700' }}>{stat}</p>
             <ProgressBarContainer>
                 <ProgressBar 
-                    percentage={valueToPercentage(stat)} 
-                    // style={{ background: 'linear-gradient(270deg, #64D368 0.15%, #64D368 70.88%)' }} />
+                    percentage={valueToPercentage(stat, maxStat)} 
                     style={style} />
             </ProgressBarContainer>
         </div>

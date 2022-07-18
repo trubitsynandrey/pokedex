@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { breakpoints } from 'src/styles/breakpoints'
 import styled from 'styled-components'
 import { useIsMobile } from '../isMobileHook'
+import { Loader } from '../Loader'
 import { usePokeContext } from '../PokeContext'
 import { LabeledProgressBar } from '../UI/LabeledProgressBar'
 import { Carousel } from './Carousel'
@@ -56,6 +57,7 @@ const ImgLegend = styled.img`
   @media (max-width: ${breakpoints.sm}) {
     width: 252px;
   height: 283px;
+  margin: 0 auto;
   }
   
 `
@@ -95,8 +97,12 @@ const BarsStackWrapper = styled.div`
 
 export const Legendaries = () => {
   const [slide, setSlide] = useState<number>(0)
-  const { data } = usePokeContext()
+  const { data, isLoading } = usePokeContext()
   const isTablet = useIsMobile(breakpoints.md)
+  console.log(data[0], 'first')
+  if (isLoading) {
+    return <Loader  />
+  }
   return (
     <LegendariesContainer>
 
@@ -115,26 +121,31 @@ export const Legendaries = () => {
                 labelName={'Health Points'}
                 stat={data[slide]?.stats[0].base_stat}
                 styleContainer={{ marginRight: '57px' }}
+                maxStat={data[slide]?.higherStats.hp}
               />
               <LabeledProgressBar
                 style={{ background: 'linear-gradient(180deg, #F5DB13 0%, #F2B807 100%)' }}
                 labelName={'Experience'}
                 stat={data[slide]?.base_experience}
+                maxStat={data[slide]?.higherStats.experience}
               />
             </BarsStackWrapper>
             <BarsStackWrapper>
               <LabeledProgressBar
+              key={data[slide]?.name}
                 style={{
                   background: 'linear-gradient(180deg, #D93E30 42.19%, #732119 100%)'
                 }}
                 labelName={'Attack'}
                 stat={data[slide]?.stats[1].base_stat}
                 styleContainer={{ marginRight: '57px' }}
+                maxStat={data[slide]?.higherStats.attack}
               />
               <LabeledProgressBar
                 style={{ background: 'linear-gradient(180deg, #009FFD 42.19%, #2A2A72 100%)' }}
                 labelName={'Defense'}
                 stat={data[slide]?.stats[2].base_stat}
+                maxStat={data[slide]?.higherStats.defense}
               />
             </BarsStackWrapper>
             {!isTablet && <BarsStackWrapper>
@@ -145,11 +156,13 @@ export const Legendaries = () => {
                 labelName={'Special Attack'}
                 stat={data[slide]?.stats[3].base_stat}
                 styleContainer={{ marginRight: '57px' }}
+                maxStat={data[slide]?.higherStats["special-attack"]}
               />
               <LabeledProgressBar
                 style={{ background: 'linear-gradient(180deg, #2A2A72 42.19%, #009FFD 100%)' }}
                 labelName={'Special Defense'}
                 stat={data[slide]?.stats[4].base_stat}
+                maxStat={data[slide]?.higherStats["special-defense"]}
               />
             </BarsStackWrapper>}
           </BarsWrapper>

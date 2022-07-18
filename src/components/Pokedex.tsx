@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { breakpoints } from 'src/styles/breakpoints'
 import { Loader } from 'src/components/Loader'
@@ -114,6 +114,7 @@ export const PokedexScreen = () => {
                         if (data.length === idx + 1) {
                             return (
                                 <PokeCard
+                                    item={item}
                                     ref={lastUserRef}
                                     key={item.id}
                                     name={item.name}
@@ -133,6 +134,7 @@ export const PokedexScreen = () => {
                                 name={item.name}
                                 attack={item.stats[1].base_stat}
                                 defense={item.stats[2].base_stat}
+                                item={item}
                                 types={item.types} color={item.colour}
                                 img={imgSrc}
                                 stats={item.stats}

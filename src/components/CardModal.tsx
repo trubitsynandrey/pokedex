@@ -1,6 +1,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
+import { isTemplateExpression } from 'typescript'
 import { CloseIcon } from '../icons/CloseIcon'
 import { breakpoints } from '../styles/breakpoints'
 import { useIsMobile } from './isMobileHook'
@@ -237,10 +238,11 @@ interface BurgerModalProps {
     experience: number,
     abilities: any,
     types: any,
+    item: any,
 }
 
 
-export const CardModal = ({ setIsModal, img, color, name, stats, experience, abilities, types }: BurgerModalProps) => {
+export const CardModal = ({ setIsModal, img, color, name, stats, experience, abilities, types, item }: BurgerModalProps) => {
     const {darkTheme} = usePokeContext()
     const statsForRender = stats.filter((item: any) => {
         return item.stat.name !== "hp" && item.stat.name !== "speed"
@@ -252,8 +254,6 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
     }
 
     const isMobile = useIsMobile()
-
-    const valueToPercentage = (val: number) => `${Math.floor(val / 10)}%`
 
     return (
         <ModalContainer setIsModal={setIsModal}>
@@ -291,13 +291,15 @@ export const CardModal = ({ setIsModal, img, color, name, stats, experience, abi
                                 style={{background: 'linear-gradient(270deg, #64D368 0.15%, #64D368 70.88%)' }} 
                                 labelName={'Health Points'} 
                                 stat={stats[0].base_stat}
+                                maxStat={item.higherStats.hp}
                             />
                         </div>
                         <div style={{ flex: 1 }}>
-                            <LabeledProgressBar 
+                            <LabeledProgressBar
                                 style={{background: 'linear-gradient(180deg, #F5DB13 0%, #F2B807 100%)' }} 
                                 labelName={'Experience'} 
                                 stat={experience} 
+                                maxStat={item.higherStats.experience}
                             />
                         </div>
                     </ProgressWrapper>

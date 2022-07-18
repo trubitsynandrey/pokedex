@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { breakpoints } from 'src/styles/breakpoints'
 import { valueToPercentage } from 'src/utils'
 import styled, { CSSProperties } from 'styled-components'
+import { setConstantValue } from 'typescript'
 
 const WhiteBox = styled.div`
     border-radius: 16px;
@@ -33,20 +34,12 @@ const ProgressBarContainer = styled.div`
     width: 100%;
 `
 
-const ProgressBar = styled.div<{ percentage: string }>`
+const ProgressBar = styled.div<{ percentage?: string }>`
     position: absolute;
     background-color: black;
     width: 0%;
     height: inherit;
-    animation: progress 0.4s linear forwards;
-    /* &[data-filling=true] {
-        
-    } */
-    @keyframes progress {
-        100% {
-            width: ${({ percentage }) => percentage}
-        }
-    }
+    transition: all 0.4 ease-in-out;
 `
 
 interface LabeledProgressBarProps {
@@ -57,15 +50,34 @@ interface LabeledProgressBarProps {
     maxStat: number,
 }
 
-export const LabeledProgressBar = ({labelName, stat, style, styleContainer, maxStat }: LabeledProgressBarProps) => {
+export const LabeledProgressBar = ({ labelName, stat, style, styleContainer, maxStat }: LabeledProgressBarProps) => {
+    const [progressNow, setProgressNow] = useState(0)
+
+    useEffect(() => {
+        let time = 25;
+        if (labelName === 'Experience') {
+            time = 10
+        }
+        const interval = setInterval(() => {
+            setProgressNow(prev => {
+                const newValue = prev + 3;
+                if (newValue >= stat) {
+                    clearInterval(interval)
+                }
+                return newValue
+            })
+        }, time)
+    return  () => clearInterval(interval)
+    }, [])
     return (
-        <div style={{flex: 1, ...styleContainer}}>
+        <div style={{ flex: 1, ...styleContainer }}>
             <p>{labelName}</p>
             <p style={{ fontWeight: '700' }}>{stat}</p>
             <ProgressBarContainer>
-                <ProgressBar 
-                    percentage={valueToPercentage(stat, maxStat)} 
-                    style={style} />
+                <ProgressBar
+                    // percentage={valueToPercentage(progressNow, maxStat)}
+                    style={{ width: valueToPercentage(progressNow, maxStat), ...style }} 
+                />
             </ProgressBarContainer>
         </div>
     )

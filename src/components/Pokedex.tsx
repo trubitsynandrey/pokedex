@@ -58,7 +58,6 @@ export const PokedexScreen = () => {
             data,
          } = usePokeContext()
     const isFilter = Object.values(filterTypes).some(bool => bool)
-    console.log(isFilter, 'isfilter')
 
     const watcher = useRef<IntersectionObserver | null>(null);
 

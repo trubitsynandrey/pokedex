@@ -61,7 +61,6 @@ export const PokedexFilter = () => {
                 return item.name.match(regexp)
             }).map(item => item.name)
         }
-        console.log(matches, 'matches')
         setSuggestions(matches)
         setFilterName(text)
         

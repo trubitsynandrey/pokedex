@@ -7,5 +7,4 @@ export const turnToFalse = (obj: filterModalsType): filterModalsType => {
 }
 
 export const valueToPercentage = (val: number, max: number) => {
-    console.log(val, max,)
     return `${Math.floor(val * 100 / max)}%`}

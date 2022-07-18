@@ -99,9 +99,8 @@ export const Legendaries = () => {
   const [slide, setSlide] = useState<number>(0)
   const { data, isLoading } = usePokeContext()
   const isTablet = useIsMobile(breakpoints.md)
-  console.log(data[0], 'first')
   if (isLoading) {
-    return <Loader  />
+    return <Loader />
   }
   return (
     <LegendariesContainer>
@@ -112,7 +111,7 @@ export const Legendaries = () => {
         <Description>
           <BigText>{data[slide]?.name}</BigText>
           <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
-          <BarsWrapper>
+          <BarsWrapper key={data[slide]?.id}>
             <BarsStackWrapper>
               <LabeledProgressBar
                 style={{
@@ -132,7 +131,6 @@ export const Legendaries = () => {
             </BarsStackWrapper>
             <BarsStackWrapper>
               <LabeledProgressBar
-              key={data[slide]?.name}
                 style={{
                   background: 'linear-gradient(180deg, #D93E30 42.19%, #732119 100%)'
                 }}

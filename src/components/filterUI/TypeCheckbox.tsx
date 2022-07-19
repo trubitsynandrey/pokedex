@@ -50,10 +50,16 @@ interface TypeCheckboxProps {
 }
 
 export const TypeCheckbox = ({ item, onChange, typesArr }: TypeCheckboxProps) => {
+    const onChangeHandler = (e:React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        e.preventDefault()
+        onChange()
+    }
     return (
         <TypeCheckboxWrapper>
             <input type="checkbox" id={item} name={item} checked={typesArr[item]} onChange={onChange} />
-            <span />
+            <span 
+            onClick={onChangeHandler}
+            />
             <label htmlFor={item} >{item}</label>
         </TypeCheckboxWrapper>)
 }

@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
+import Slider, { Settings } from "react-slick"
 import { ArrowCarouselLeft } from 'src/icons/ArrowCarouselLeft'
+import { ArrowRight } from 'src/icons/ArrowRight'
+import { breakpoints } from 'src/styles/breakpoints'
 import styled from 'styled-components'
 import { usePokeContext } from '../PokeContext'
 import { PokemonCarouselCard } from './PokemonCarouselCard'
-import Slider, { Settings } from "react-slick";
-import { ArrowRight } from 'src/icons/ArrowRight'
-import { breakpoints } from 'src/styles/breakpoints'
 
 const CarouselWrapper = styled.div`
     & .slick-track {
@@ -112,7 +112,7 @@ export const Carousel = ({setSlide}: CarouselProps) => {
             <Slider {...settings}>
                 {data.map(item => {
                     const src = item?.sprites?.other.dream_world.front_default
-                    return <PokemonCarouselCard src={src} name={item.name} />
+                    return <PokemonCarouselCard key={item.id} src={src} name={item.name} />
                 })}
             </Slider>
         </CarouselWrapper>

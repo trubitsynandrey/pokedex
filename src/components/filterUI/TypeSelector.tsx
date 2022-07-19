@@ -1,10 +1,6 @@
-import React from 'react'
-import { types, typesUnion } from 'src/types'
 import styled from 'styled-components'
-import { usePokeContext } from '../PokeContext'
-
 import { ContainerSelect } from './ContainerSelect'
-import { TypeCheckbox } from './TypeCheckbox'
+import { TypesModal } from './TypesModal'
 
 const TypeSelectorWindow = styled.div`
     display: none;
@@ -14,36 +10,20 @@ const TypeSelectorWindow = styled.div`
     background-color: #F2F2F2;
     flex-direction: column;
     position: absolute;
-    width: inherit;
-    z-index: 50;
-    max-height: 150px;
-    overflow-y: scroll;
-    padding-top: 14px;
-    padding-bottom: 14px;
-    padding-left: 32px;
+    width: auto;
+    z-index: 2;
+    padding: 14px 32px;
     border-radius: 8px;
     text-align: left;
 `
 
 export const TypeSelector = () => {
-    const { filterTypes, setFilterTypes } = usePokeContext()
-    const onChangeFilter = (item: typesUnion) => {
-        setFilterTypes(prev => ({
-            ...prev, [item]: !filterTypes[item]
-        }))
-    }
     return (
         <ContainerSelect name={'type'}>
             <TypeSelectorWindow>
-                {types.map((item, idx) =>
-                    <TypeCheckbox 
-                        key={idx} 
-                        item={item} 
-                        typesArr={filterTypes} 
-                        onChange={() => onChangeFilter(item)} 
-                    />
-                )}
+                <TypesModal />  
             </TypeSelectorWindow>
+            
         </ContainerSelect >
 
     )

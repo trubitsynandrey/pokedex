@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CloseIcon } from '../../icons/CloseIcon'
-import { types, typesUnion } from '../../types'
-import { usePokeContext } from '../PokeContext'
 import { ModalContainer } from '../UI/ModalContainer'
 import { RangeMobileWrapper } from './RangeMobileWrapper'
 import { RangeWindow } from './RangeSelectorWindow'
-import { TypeCheckbox } from './TypeCheckbox'
+import { TypesModal } from './TypesModal'
 
 const ModalInner = styled.div`
     position: absolute;
@@ -27,13 +25,6 @@ const ModalInner = styled.div`
     z-index: 99;
 `
 
-const TypesWrapper = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 30px;
-    row-gap: 8px;
-`
-
 const CloseIconWrapper = styled.div`
     position: absolute;
     right: 10px;
@@ -45,26 +36,11 @@ interface BurgerModalProps {
 }
 
 export const FilterModal = ({ setIsModal }: BurgerModalProps) => {
-    const { filterTypes, setFilterTypes } = usePokeContext()
-    const onChangeFilter = (item: typesUnion) => {
-        setFilterTypes(prev => ({
-            ...prev, [item]: !filterTypes[item]
-        }))
-    }
     return (
         <ModalContainer setIsModal={setIsModal}>
             <ModalInner>
                 <RangeMobileWrapper name={'type'}>
-                    <TypesWrapper>
-                        {types.map((item, idx) =>
-                            <TypeCheckbox
-                                key={idx}
-                                item={item}
-                                typesArr={filterTypes}
-                                onChange={() => onChangeFilter(item)}
-                            />
-                        )}
-                    </TypesWrapper>
+                    <TypesModal />
                 </RangeMobileWrapper>
                 <RangeMobileWrapper name={'attack'}>
                     <RangeWindow name={'attack'} />

@@ -38,8 +38,15 @@ const BigText = styled.p`
   }
 `
 
-const HeaderLegend = styled(BigText)`
-    border-bottom: 1px solid #212121;
+const HeaderLegend = styled(BigText)<{darkTheme: boolean}>`
+    &::after {
+      margin-top: 19px;
+       content: "";
+       display: block;
+       width: 75%;
+       background-color: ${({ darkTheme }) => darkTheme ? 'white' : '#212121'};
+       height: 2px;
+    }
     padding-bottom: 20px;
     font-weight: 400;
     margin-bottom: 50px;
@@ -97,7 +104,7 @@ const BarsStackWrapper = styled.div`
 
 export const Legendaries = () => {
   const [slide, setSlide] = useState<number>(0)
-  const { data, isLoading } = usePokeContext()
+  const { data, isLoading, darkTheme } = usePokeContext()
   const isTablet = useIsMobile(breakpoints.md)
   if (isLoading) {
     return <Loader />
@@ -105,7 +112,7 @@ export const Legendaries = () => {
   return (
     <LegendariesContainer>
 
-      <HeaderLegend>Legendaries</HeaderLegend>
+      <HeaderLegend darkTheme={darkTheme}>Legendaries</HeaderLegend>
       <DescriptionWrapper>
         <ImgLegend src={data[slide]?.sprites?.other.dream_world.front_default} />
         <Description>

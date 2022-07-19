@@ -21,7 +21,7 @@ const HeaderContainer = styled.header<{ isDarkTheme: boolean }>`
     background-color: ${({ isDarkTheme }) => isDarkTheme ? '#4F4F4F' : '#F5DB13'};
     box-shadow: 0px 4px 16px rgba(1, 28, 64, 0.2);
     justify-content: space-between;
-    z-index: 2;
+    z-index: 5;
     @media (max-width: ${breakpoints.lg}) {
         padding-left: 5%;
         padding-right: 5%;

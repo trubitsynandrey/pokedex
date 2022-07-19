@@ -39,7 +39,7 @@ const ProgressBar = styled.div<{ percentage?: string }>`
     background-color: black;
     width: 0%;
     height: inherit;
-    transition: all 0.4 ease-in-out;
+    transition: all 0.4 ease-in;
 `
 
 interface LabeledProgressBarProps {

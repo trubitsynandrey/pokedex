@@ -78,7 +78,7 @@ export const BurgerModal = ({ setIsModal }: BurgerModalProps) => {
                 </LogoContainer>
                 <NavItem to="/">Home</NavItem>
                 <NavItem to="/pokedex">Pokédex</NavItem>
-                <NavItem to="/ledendaries">Legendaries</NavItem>
+                <NavItem to="/legendaries">Legendaries</NavItem>
                 <NavItem to="/compare">Compare</NavItem>
                 <ToggleSwitch onToggle={setDark} isToggled={false} />
             </ModalInner>

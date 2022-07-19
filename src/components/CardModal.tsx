@@ -1,11 +1,12 @@
 
 import React from 'react'
+import { pokeColors } from 'src/styles/colors'
 import styled from 'styled-components'
 import { isTemplateExpression } from 'typescript'
 import { CloseIcon } from '../icons/CloseIcon'
 import { breakpoints } from '../styles/breakpoints'
 import { useIsMobile } from './isMobileHook'
-import { colorsType, Label, labelColours, pokeColors, PropertyName } from './PokeCard'
+import { colorsType, Label, labelColours, PropertyName } from './PokeCard'
 import { usePokeContext } from './PokeContext'
 import { LabeledProgressBar } from './UI/LabeledProgressBar'
 import { ModalContainer } from './UI/ModalContainer'

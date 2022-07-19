@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { breakpointsNumbers, displayTypes } from "src/types";
 
 export const useIsMobile = (display: displayTypes = "576px"): boolean => {

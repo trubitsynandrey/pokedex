@@ -113,6 +113,7 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
 
     const species = await data.map(item => fetch(item.species.url).then(res => res.json()))
     const dataSpecies = await Promise.all(species)
+    console.log(dataSpecies, 'dataSpecies')
     const evolutionChainRequests = await dataSpecies.map(item => fetch(item.evolution_chain.url).then(res => res.json()))
     const evolutionChain = await Promise.all(evolutionChainRequests)
     const evolutionChainId= evolutionChain.map(item => item.chain).map(item => {
@@ -136,7 +137,8 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     const newdata = data.map((item, idx) => {
       return Object.assign(item, 
         { colour: color[idx],
-          higherStats: idToStats[idx]
+          higherStats: idToStats[idx],
+          flavorText: dataSpecies[idx].flavor_text_entries[0].flavor_text,
         }, {})
     })
 
@@ -178,6 +180,7 @@ export const PokeContext: FC<{ children: ReactNode }> = ({ children }) => {
     setFilterModals(initialValue.filterModals)
     setFilterRanges(initialValue.filterRanges)
     setFilterTypes(initialValue.filterTypes)
+    window.scrollTo(0, 0);
   }, [location])
   const value = {
     isNavModal,

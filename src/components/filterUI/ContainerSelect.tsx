@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react'
-import styled from 'styled-components'
-import { usePokeContext } from '../PokeContext'
-import { filterModalsType, keysFilterModals } from '../../types'
+import { ReactNode } from 'react'
 import { turnToFalse } from 'src/utils'
+import styled from 'styled-components'
+import { keysFilterModals } from '../../types'
+import { usePokeContext } from '../PokeContext'
 
 const IconWrapper = styled.div`
     position: absolute;

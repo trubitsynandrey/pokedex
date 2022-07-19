@@ -1,7 +1,7 @@
-import React from 'react'
+import { forwardRef } from 'react'
 import { Pokeball } from 'src/icons/Pokeball'
 import styled from 'styled-components'
-import { usePokeContext } from '../PokeContext'
+
 const CardWrapper = styled.div`
     position: relative;
     height: 180px;
@@ -51,10 +51,9 @@ interface PokemonCarouselCardProps {
     name: string,
 }
 
-export const PokemonCarouselCard = ({src, name}: PokemonCarouselCardProps) => {
-    const { data } = usePokeContext()
+export const PokemonCarouselCard = forwardRef(({src, name}: PokemonCarouselCardProps, ref: any) => {
     return (
-        <CardWrapper>
+        <CardWrapper ref={ref}>
             <PokeImg src={src} />
             <WhiteBox>
                 <PokeName>{name}</PokeName>
@@ -62,5 +61,5 @@ export const PokemonCarouselCard = ({src, name}: PokemonCarouselCardProps) => {
             </WhiteBox>
         </CardWrapper>
     )
-}
+})
 

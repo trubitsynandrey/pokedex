@@ -66,7 +66,9 @@ export const PokedexScreen = () => {
         if (isLoadingMore) return;
         if (watcher.current) watcher.current.disconnect()
         watcher.current = new IntersectionObserver(entries => {
+            console.log(entries, 'entries')
             if (entries[0].isIntersecting) {
+                console.log('last pokedex')
                 setOffset(prev => prev + 24)
             }
         })

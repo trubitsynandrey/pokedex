@@ -1,22 +1,10 @@
 import React, { forwardRef, ReactElement, useEffect, useState } from 'react'
+import { pokeColors } from 'src/styles/colors'
 import styled from 'styled-components'
 import { breakpoints } from '../styles/breakpoints'
 import { CardModal } from './CardModal'
 import { usePokeContext } from './PokeContext'
 import { ReactPortal } from './UI/CreatePortalFunc'
-
-export const pokeColors = {
-    green: ['#64D368', '#64D368'],
-    yellow: ['#F2CB07', '#F2B807'],
-    red: ['#B33327', '#D93E30',],
-    pink: ['#F89EAE', '#F4B5C1'],
-    purple: ['#6A359C', '#804FB3'],
-    blue: ['#5BC7FA', '#35BAFF'],
-    brown: ['#772F1A', '#F2A65A'],
-    white: ['#B8C6DB', '#F5F7FA'],
-    gray: ['#B8C6DB', '#F5F7FA'],
-    black: ['#28313B', '#485461']
-}
 
 
 const PokeImg = styled.img`
@@ -34,9 +22,6 @@ const Card = styled.div<{isDarkTheme: boolean}>`
     border-radius: 8px;
     overflow: hidden;
     background-color: ${({isDarkTheme}) => isDarkTheme? '#333333' : '#F6F7F9'};
-`
-
-const CardLeftSide = styled.div`
 `
 
 export type colorsType = keyof typeof pokeColors
@@ -59,7 +44,6 @@ const PokeDescription = styled.div`
 const PokeName = styled.p`
     font-size: 18px;
     line-height: 21px;
-    /* color: #212121; */
     font-weight: 700;
     text-transform: capitalize;
     margin-bottom: 18px;
@@ -77,7 +61,6 @@ export const PropertiesCircle = styled.div<{isDarkTheme: boolean}>`
 export const PropertyName = styled.span`
     font-size: 12px;
     line-height: 14px;
-    /* color: #4B4B4B; */
     text-transform: capitalize;
     text-align: center;
     @media (max-width: ${breakpoints.lg}) {

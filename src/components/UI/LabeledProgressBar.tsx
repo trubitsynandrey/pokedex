@@ -1,9 +1,7 @@
-import { truncate } from 'fs/promises'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { breakpoints } from 'src/styles/breakpoints'
 import { valueToPercentage } from 'src/utils'
 import styled, { CSSProperties } from 'styled-components'
-import { setConstantValue } from 'typescript'
 
 const WhiteBox = styled.div`
     border-radius: 16px;
@@ -75,7 +73,6 @@ export const LabeledProgressBar = ({ labelName, stat, style, styleContainer, max
             <p style={{ fontWeight: '700' }}>{stat}</p>
             <ProgressBarContainer>
                 <ProgressBar
-                    // percentage={valueToPercentage(progressNow, maxStat)}
                     style={{ width: valueToPercentage(progressNow, maxStat), ...style }} 
                 />
             </ProgressBarContainer>
